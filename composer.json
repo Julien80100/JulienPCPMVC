@@ -1,0 +1,19 @@
+{
+    "name": "julien/projet_pcp",
+    "authors": [
+        {
+            "name": "Julien THOCQUENNE",
+            "email": "jthocquenne@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/spot2": "^2.2"
+    },
+    "autoload": {
+      "psr-4": {
+        "Components\\": "components/",
+        "Controllers\\": "controllers/",
+        "Models\\": "models/"
+      }
+    }
+}
