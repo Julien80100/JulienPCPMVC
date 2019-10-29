@@ -23,7 +23,7 @@ class TacheController extends Controller
       echo $this->twig->render('list.html',
         [
           "taches" => $taches,
-          "quantity" => count($taches)          
+          "quantity" => count($taches)
         ]
       );
     }
