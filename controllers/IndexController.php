@@ -1,11 +1,16 @@
 <?php
-
 namespace Controllers;
+use controllers\TacheController;
+use controllers\UserController;
 
-class IndexController
+
+class IndexController extends TacheController
 {
     public function index()
     {
-        echo "Hello World!";
+      var_dump('coucou');
+//         echo "<br />";
+//         tachecontroller->list;
+    
     }
 }

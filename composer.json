@@ -7,13 +7,16 @@
         }
     ],
     "require": {
-        "vlucas/spot2": "^2.2"
+        "vlucas/spot2": "^2.2",
+        "twig/twig": "^2.11",
+        "doctrine/orm": "^2.6"
     },
     "autoload": {
       "psr-4": {
         "Components\\": "components/",
         "Controllers\\": "controllers/",
-        "Models\\": "models/"
+        "Models\\": "models/",
+        "Entity\\": "entity/"
       }
     }
 }
