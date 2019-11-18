@@ -3,13 +3,13 @@
 namespace Controllers;
 
 use Models\Taches;
-use entity\Tache;
+use Entity\Tache;
 
 class TacheController extends Controller
 {
     public function index()
     {
-        echo "Hello Tache Page!";
+      echo('tache page');
     }
 
       public function list($get, $post, $em)
@@ -27,4 +27,31 @@ class TacheController extends Controller
         ]
       );
     }
+  
+    public function new($get, $post, $em, $path)
+      {
+        $competences = $em->getRepository("Entity\Competence")->findAll();
+        echo $this->twig->render('form.html',
+          [
+            "competences" => $competences
+          ]
+        );
+      }
+  
+    public function created($get, $post, $em, $path)
+      {
+      $tache = new Tache;
+      $tache->setDescription($post['Description']);
+      $date = new \DateTime($post['Date']);
+      $tache->setDate($date);
+
+      $em->persist($tache);
+      $em->flush(); 
+
+        echo $this->twig->render('created.html',
+          [
+            "tache" => $tache
+          ]
+        );
+      }
 }

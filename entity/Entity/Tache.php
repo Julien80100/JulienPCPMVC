@@ -2,37 +2,38 @@
 
 namespace Entity;
 
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * @ORM\Entity
- * @ORM\Table(name="taches")
+ * Tache
  */
 class Tache
 {
-    /** 
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
-    protected $id;
-    /** 
-     * @ORM\Column(type="date") 
-     */
-    protected $date;
-    /** 
-     * @ORM\Column(type="text") 
-     */
-    protected $description;
-  
     /**
-     * @ORM\ManyToMany(targetEntity="Competence", inversedBy="taches")
+     * @var int
      */
-    protected $competences;
+    private $id;
 
+    /**
+     * @var \DateTime
+     */
+    private $date;
 
-    // .. (other code)
+    /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $competences;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->competences = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -45,11 +46,11 @@ class Tache
     }
 
     /**
-     * Set date
+     * Set date.
      *
-     * @param date $date
+     * @param \DateTime $date
      *
-     * @return Table
+     * @return Tache
      */
     public function setDate($date)
     {
@@ -59,23 +60,23 @@ class Tache
     }
 
     /**
-     * Get name.
+     * Get date.
      *
-     * @return string
+     * @return \DateTime
      */
     public function getDate()
     {
         return $this->date;
     }
-  
+
     /**
-     * Set description
+     * Set description.
      *
-     * @param description $description
+     * @param string $description
      *
-     * @return Table
-     */  
-   public function setDescription($description)
+     * @return Tache
+     */
+    public function setDescription($description)
     {
         $this->description = $description;
 
@@ -91,6 +92,7 @@ class Tache
     {
         return $this->description;
     }
+
     /**
      * Add competence.
      *
@@ -126,5 +128,4 @@ class Tache
     {
         return $this->competences;
     }
-
 }

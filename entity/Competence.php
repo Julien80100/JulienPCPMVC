@@ -25,18 +25,7 @@ class Competence
      * @ORM\Column(type="string") 
      */
     protected $title;
-    /** 
-     * @ORM\Column(type="string") 
-     */
-    protected $competenceID;
-    /** 
-     * @ORM\Column(type="string") 
-     */
-    protected $activityID;
-    /** 
-     * @ORM\Column(type="string") 
-     */
-    protected $epreuve;
+  
 
 
     // .. (other code)

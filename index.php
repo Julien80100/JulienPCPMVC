@@ -11,6 +11,7 @@ $cache = null;
 $useSimpleAnnotationReader = false;
 $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/entity"), $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
 
+//var_dump(__DIR__."/entity");die;
 // database configuration parameters
 $conn = array(
           'driver' => 'pdo_mysql',
@@ -18,7 +19,6 @@ $conn = array(
           'password' => '2018',
           'host' => 'localhost',
           'dbname' => 'julien',
-
 );
 
 // obtaining the entity manager
@@ -27,12 +27,13 @@ $entityManager = EntityManager::create($conn, $config);
 //
 $class = "Controllers\\" . (isset($_GET['c']) ? ucfirst($_GET['c']) . 'Controller' : 'IndexController');
 $target = isset($_GET['t']) ? $_GET['t'] : "index";
-$getParams = isset($_GET['params']) ? $_GET['params'] : null;
-$postParams = isset($_POST['params']) ? $_POST['params'] : null;
+$getParams = isset($_GET) ? $_GET : null;
+$postParams = isset($_POST) ? $_POST : null;
 $params = [
     "get"  => $getParams,
     "post" => $postParams,
-    "entityanager" => $entityManager
+    "entitymanager" => $entityManager,
+    "path" => 'http://195.154.118.169/julien/TP/'
 ];
 
 if (class_exists($class, true)) {
