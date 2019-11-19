@@ -25,12 +25,22 @@ class Competence
      * @ORM\Column(type="string") 
      */
     protected $title;
-  
+
+    /** 
+     * @ORM\Column(type="string") 
+     */
+    protected $declinaison;
+    /** 
+     * @ORM\Column(type="string") 
+     */
+    protected $activity;
+    /** 
+     * @ORM\Column(type="string") 
+     */
+    protected $epreuve;
 
 
-    // .. (other code)
-
-    /**
+   /**
      * Get id.
      *
      * @return int
@@ -41,11 +51,11 @@ class Competence
     }
 
     /**
-     * Set date
+     * Set type.
      *
-     * @param date $type
+     * @param string $type
      *
-     * @return Table
+     * @return Competence
      */
     public function setType($type)
     {
@@ -89,51 +99,51 @@ class Competence
     }
 
     /**
-     * Set competenceID.
+     * Set declinaison.
      *
-     * @param string $competenceID
+     * @param string $declinaison
      *
      * @return Competence
      */
-    public function setCompetenceID($competenceID)
+    public function setDeclinaison($declinaison)
     {
-        $this->competenceID = $competenceID;
+        $this->declinaison = $declinaison;
 
         return $this;
     }
 
     /**
-     * Get competenceID.
+     * Get declinaison.
      *
      * @return string
      */
-    public function getCompetenceID()
+    public function getDeclinaison()
     {
-        return $this->competenceID;
+        return $this->declinaison;
     }
 
     /**
-     * Set activityID.
+     * Set activity.
      *
-     * @param string $activityID
+     * @param string $activity
      *
      * @return Competence
      */
-    public function setActivityID($activityID)
+    public function setActivity($activity)
     {
-        $this->activityID = $activityID;
+        $this->activity = $activity;
 
         return $this;
     }
 
     /**
-     * Get activityID.
+     * Get activity.
      *
      * @return string
      */
-    public function getActivityID()
+    public function getActivity()
     {
-        return $this->activityID;
+        return $this->activity;
     }
 
     /**
@@ -159,4 +169,6 @@ class Competence
     {
         return $this->epreuve;
     }
+
+    
 }
