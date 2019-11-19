@@ -16,10 +16,6 @@ class CompetenceController extends Controller
     {
         $competenceRepository = $em->getRepository('Entity\Competence');
         $competences = $competenceRepository->findall();               
-//         foreach($competences as $competence) {
-//           echo $competence->getId();
-//           echo $competence->getTitle();
-//         }
       echo $this->twig->render('list.html',
         [
           "competences" => $competences,

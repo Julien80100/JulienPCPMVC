@@ -14,8 +14,8 @@
     </head>
     <body>
       <h2>List tache: </h2>
-      {% for user in TacheList %}
-        <li class="tache"> {{ tache.date }} </li>
+      {% for tache in taches %}
+        <li class="tache"> {{ tache.date|date("d/m/Y") }} </li>
         <li class="tache"> {{ tache.description }} </li>
       {% endfor %}
       <hr />

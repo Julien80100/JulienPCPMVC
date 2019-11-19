@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="taches")
+ * @ORM\Table(name="tache")
  */
 class Tache
 {
@@ -26,8 +26,18 @@ class Tache
      */
     protected $description;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Competence", inversedBy="taches")
+     */
+    protected $competences;
 
-    // .. (other code)
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->competences = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -40,11 +50,11 @@ class Tache
     }
 
     /**
-     * Set date
+     * Set date.
      *
-     * @param date $date
+     * @param \DateTime $date
      *
-     * @return Table
+     * @return Tache
      */
     public function setDate($date)
     {
@@ -54,23 +64,23 @@ class Tache
     }
 
     /**
-     * Get name.
+     * Get date.
      *
-     * @return string
+     * @return \DateTime
      */
     public function getDate()
     {
         return $this->date;
     }
-  
+
     /**
-     * Set description
+     * Set description.
      *
-     * @param description $description
+     * @param string $description
      *
-     * @return Table
-     */  
-   public function setDescription($description)
+     * @return Tache
+     */
+    public function setDescription($description)
     {
         $this->description = $description;
 
@@ -85,6 +95,42 @@ class Tache
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Add competence.
+     *
+     * @param \Entity\Competence $competence
+     *
+     * @return Tache
+     */
+    public function addCompetence(\Entity\Competence $competence)
+    {
+        $this->competences[] = $competence;
+
+        return $this;
+    }
+
+    /**
+     * Remove competence.
+     *
+     * @param \Entity\Competence $competence
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCompetence(\Entity\Competence $competence)
+    {
+        return $this->competences->removeElement($competence);
+    }
+
+    /**
+     * Get competences.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCompetences()
+    {
+        return $this->competences;
     }
 
 }

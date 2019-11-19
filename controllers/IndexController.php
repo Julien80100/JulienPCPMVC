@@ -4,12 +4,12 @@ use controllers\TacheController;
 use controllers\UserController;
 
 
-class IndexController extends TacheController
+class IndexController extends Controller
 {
-    public function index()
+    public function index($params)
     {
-      var_dump('coucou');
-//         echo "<br />";
+//       var_dump('coucou');
+        echo "coucou world";
 //         tachecontroller->list;
     
     }
