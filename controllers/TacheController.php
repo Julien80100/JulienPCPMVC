@@ -1,17 +1,13 @@
 <?php
-
 namespace Controllers;
-
 use Models\Taches;
-use entity\Tache;
-
+use Entity\Tache;
 class TacheController extends Controller
 {
     public function index()
     {
-        echo "Hello Tache Page!";
+      echo('tache page');
     }
-
       public function list($get, $post, $em)
     {
         $tacheRepository = $em->getRepository('Entity\Tache');
@@ -27,4 +23,41 @@ class TacheController extends Controller
         ]
       );
     }
+  
+    public function new($get, $post, $em, $path)
+      {
+        $competences = $em->getRepository("Entity\Competence")->findAll();
+        echo $this->twig->render('form.html',
+          [
+            "competences" => $competences
+          ]
+        );
+      }
+  
+    public function created($get, $post, $em, $path)
+      {
+      
+      echo "<pre>";
+      $tache = new Tache;
+      $tache->setDescription($post['Description']);
+      $date = new \DateTime($post['Date']);
+      $tache->setDate($date);
+      $competences=$post['competences'];
+      $competenceTab=[];
+      foreach ($competences as $competenceId) {
+          $competence = $em->getRepository("Entity\Competence")->find($competenceId);
+          if ($competence) {
+            $competenceTab[]=$competence;
+          }
+      }
+      $tache->addCompetences($competenceTab);
+      //var_dump($tache);die;
+      $em->persist($tache);
+      $em->flush(); 
+        echo $this->twig->render('created.html',
+          [
+            "tache" => $tache
+          ]
+        );
+      }
 }

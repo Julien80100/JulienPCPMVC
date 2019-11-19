@@ -110,6 +110,15 @@ class Tache
 
         return $this;
     }
+  
+    public function addCompetences($competences)
+    {
+        foreach ($competences as $competence) {
+          $this->addCompetence($competence);
+        }
+
+        return $this;
+    }
 
     /**
      * Remove competence.

@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Julien PCP </title>
+    <meta charset="UTF-8" />
+  </head>
+  
+  <body>
+    <h3 align="center">
+       Nouvelle tache
+    </h3>
+    <br />
+      <form action="{{ path }}?c=tache&t=created" method="post">
+  <div>
+    <label for="label">Label de la tache : </label>
+    <input type="text" name="Label" id="Label" required>
+  </div>
+  <div>
+    <label for="description">Description de la tache : </label>
+    <input type="Description" name="Description" id="Description" required>
+  </div>
+  <div>
+    <label for="Date">Date : </label>
+    <input type="Date" name="Date" id="Date" required>
+  </div>
+  <div>
+   <select name="competences[]" multiple="true" size="5">
+     {% for competence in competences %}
+      <option value="{{ competence.id }}">{{ competence.title }}</option>
+     {% endfor %}
+     
+    </select> 
+    
+   </div>
+  <div>
+    <input type="submit" value="Valider">
+  </div>
+    </form>
+  </body>
+</html>

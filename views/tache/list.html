@@ -13,10 +13,18 @@
         </style>
     </head>
     <body>
+      <a href="{{ path }}?c=tache&t=new" target="_self">Nouvelle tache</a>
       <h2>List tache: </h2>
       {% for tache in taches %}
         <li class="tache"> {{ tache.date|date("d/m/Y") }} </li>
         <li class="tache"> {{ tache.description }} </li>
+        <li class="tache"> {{ tache.competence }}</li>
+        <ul>
+          {% for competence in tache.competences %}
+            <li>{{ competence.title }}</li>
+          {% endfor %}
+        </ul><</-->
+        <br />
       {% endfor %}
       <hr />
       <p>Quantity: {{ quantity }} taches.</p>
