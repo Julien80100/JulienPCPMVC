@@ -8,9 +8,7 @@ class IndexController extends Controller
 {
     public function index($params)
     {
-//       var_dump('coucou');
-        echo "coucou world";
-//         tachecontroller->list;
+        echo $this->twig->render('accueil.html',[]);
     
     }
 }

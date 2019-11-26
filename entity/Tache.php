@@ -32,11 +32,6 @@ class Tache
     protected $competences;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Competence", inversedBy="taches")
-     */
-    protected $competences;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -101,19 +96,6 @@ class Tache
     {
         return $this->description;
     }
-    /**
-     * Add competence.
-     *
-     * @param \Entity\Competence $competence
-     *
-     * @return Tache
-     */
-    public function addCompetence(\Entity\Competence $competence)
-    {
-        $this->competences[] = $competence;
-
-        return $this;
-    }
 
     /**
      * Remove competence.
@@ -125,6 +107,15 @@ class Tache
     public function removeCompetence(\Entity\Competence $competence)
     {
         return $this->competences->removeElement($competence);
+    }
+  
+    public function removeCompetences()
+    {
+        foreach ($this->competences as $competence) {
+          $this->removeCompetence($competence);
+        }
+
+        return $this;
     }
 
     /**
@@ -151,6 +142,8 @@ class Tache
         return $this;
     }
   
+  
+  
     public function addCompetences($competences)
     {
         foreach ($competences as $competence) {
@@ -160,26 +153,7 @@ class Tache
         return $this;
     }
 
-    /**
-     * Remove competence.
-     *
-     * @param \Entity\Competence $competence
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeCompetence(\Entity\Competence $competence)
-    {
-        return $this->competences->removeElement($competence);
-    }
-
-    /**
-     * Get competences.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCompetences()
-    {
-        return $this->competences;
-    }
-
+//     public function __toString() {
+//       return $this->description;
+//     }
 }

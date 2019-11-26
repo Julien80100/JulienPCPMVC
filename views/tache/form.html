@@ -11,19 +11,17 @@
     <br />
       <form action="{{ path }}?c=tache&t=created" method="post">
   <div>
-    <label for="label">Label de la tache : </label>
-    <input type="text" name="Label" id="Label" required>
-  </div>
-  <div>
     <label for="description">Description de la tache : </label>
-    <input type="Description" name="Description" id="Description" required>
+    <p>
+    <textarea name="Description" id="Description" required ></textarea>
+    </p>
   </div>
   <div>
     <label for="Date">Date : </label>
     <input type="Date" name="Date" id="Date" required>
   </div>
   <div>
-   <select name="competences[]" multiple="true" size="5">
+   <select name="competences[]" multiple="true" size="10"> 
      {% for competence in competences %}
       <option value="{{ competence.id }}">{{ competence.title }}</option>
      {% endfor %}

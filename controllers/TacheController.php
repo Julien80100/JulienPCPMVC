@@ -42,10 +42,8 @@ class TacheController extends Controller
       $tache->setDescription($post['Description']);
       $date = new \DateTime($post['Date']);
       $tache->setDate($date);
-
       $em->persist($tache);
       $em->flush(); 
-
       $competences=$post['competences'];
       $competenceTab=[];
       foreach ($competences as $competenceId) {
@@ -55,7 +53,6 @@ class TacheController extends Controller
           }
       }
       $tache->addCompetences($competenceTab);
-      //var_dump($tache);die;
       $em->persist($tache);
       $em->flush(); 
         echo $this->twig->render('created.html',
@@ -64,4 +61,49 @@ class TacheController extends Controller
           ]
         );
       }
+  
+  public function edit($get, $post, $em, $path)
+  {
+    $tache = $em->getRepository("Entity\Tache")->findOneBy(["id" => $get["id"]]);
+    $competences = $em->getRepository("Entity\Competence")->findAll();
+    echo $this->twig->render('update.html',
+      [
+        "tache" => $tache,
+        "competences" => $competences
+      ]
+    ); 
+  }
+  
+  public function updated($get, $post, $em, $path)
+  {
+    
+    $tache = $em->getRepository("Entity\Tache")->find($get["id"]); 
+    $tache->removeCompetences();
+    $em->persist($tache);
+    $em->flush();
+    
+    $tache->setDescription($post['Description']);
+    $date = new \DateTime($post['Date']);
+    $tache->setDate($date);
+    
+    
+    
+    $competences=$post['competences'];
+    $competenceTab=[];
+    
+    foreach ($competences as $competenceId) {
+        $competence = $em->getRepository("Entity\Competence")->find($competenceId);
+        if ($competence) {
+          $competenceTab[]=$competence;
+        }
+    }
+    $tache->addCompetences($competenceTab);
+    $em->persist($tache);
+    $em->flush(); 
+    echo $this->twig->render('updated.html',
+      [
+        "tache" => $tache
+      ]
+    );
+  }
 }

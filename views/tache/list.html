@@ -25,8 +25,8 @@
           {% for competence in tache.competences %}
             <li>{{ competence.title }}</li>
           {% endfor %}
-        </ul><</-->
-
+        </ul>
+        <a href="?c=tache&t=edit&id={{ tache.id }}" target="_self"> Editer la tache</a>
         <br />
       {% endfor %}
       <hr />
