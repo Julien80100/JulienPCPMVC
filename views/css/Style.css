@@ -1,0 +1,11 @@
+body {
+	background-color: #C5C2C1; 
+/*   background-repeat: no-repeat; */
+/*   background-size: 100%; */
+/*   background-attachment: fixed; */
+  color: yellow;
+	/*Arrière plan de la page*/
+}
+.tache {
+      color: green;
+    }

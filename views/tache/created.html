@@ -5,15 +5,15 @@
   </head>
   
   <body>
-    <h2>
-      La tache {{ tache.id }} à était créée.
-    </h2>
+    <h2>La tache {{ tache.id }} à était créée.</h2>
+
     <br />
+    
     <p> date : {{ tache.date|date("d/m/Y") }} </p>
     <p> description : {{ tache.description }} </p>
+    
     <br />
-    <p>
-      <a href="?c=tache&t=list" target="_self">Liste</a>
-    </p>
+    
+    <p><a href="?c=tache&t=list" target="_self">Liste</a></p>
   </body>
 </html>

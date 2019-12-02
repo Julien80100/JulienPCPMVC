@@ -1,35 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>MVC Test - Index</title>
-        <style>
-          body {
-            background-color: black;
-            color: yellow;
-          }
-          .tache {
-            color: green;
-          }
-        </style>
-    </head>
-    <body>
+  <head>
+    <title>MVC Test - Index</title>
+    <link rel="stylesheet" href="views/css/Style.css" />
+  </head>
 
-      <a href="?c=tache&t=new" target="_self">Nouvelle tache</a>
+  <body>
+    <a href="?c=tache&t=new" target="_self">Nouvelle tache</a>
 
-      <h2>List tache: </h2>
+    <h2>Liste des taches: </h2>
+    <h4>Quantité: {{ quantity }} taches.</h4>
+    
+    <br />
+    
+    <table border="2px">
+      <tr>
+        <td weight="400px"> Compétence </td>
+        <td> Description </td>
+        <td> Date </td>
+        <td> Option </td> 
+      </tr>
+      
       {% for tache in taches %}
-        <li class="tache"> {{ tache.date|date("d/m/Y") }} </li>
-        <li class="tache"> {{ tache.description }} </li>
-
-        <ul>
-          {% for competence in tache.competences %}
-            <li>{{ competence.title }}</li>
-          {% endfor %}
-        </ul>
-        <a href="?c=tache&t=edit&id={{ tache.id }}" target="_self"> Editer la tache</a>
-        <br />
+      
+      <tr>
+        <td>
+          <ul>
+            {% for competence in tache.competences %}
+              <li>{{ competence.title }}</li>
+            {% endfor %}
+          </ul>
+        </td>
+        <td> {{ tache.description }}  </td>
+        <td> {{ tache.date|date("d/m/Y") }} </td>
+        
+        <td>
+            <p><a href="?c=tache&t=edit&id={{ tache.id }}" target="_self"> Editer la tache</a></p>
+            <p><a href="?c=tache&t=remove&id={{ tache.id }}" target="_self"> Supprimer la tache</a></p>
+        </td>
+      </tr>
+      
+      
       {% endfor %}
-      <hr />
-      <p>Quantity: {{ quantity }} taches.</p>
-    </body>
+    </table>
+  </body>
 </html>

@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>MVC Test - Index</title>
-        <style>
-          body {
-            background-color: black;
-            color: yellow;
-          }
-          .Label {
-            color: green;
-          }
-          .Code {
-            color: red;
-          }
-        </style>
-    </head>
-    <body>
-      <h2>List: </h2>
-      {% for competence in competences %}
-        <lo class="Label">{{ competence.Title }}</lo>
-        <li class="Code">{{ competence.Id }}</li>
-        <br></br>
-      {% endfor %}
-      <hr />
-      <p>Quantity: {{ quantity }} competences.</p>
-    </body>
+  <head>
+    <title>MVC Test - Index</title>
+  </head>
+    
+  <body>
+    <h2>List: </h2>
+    {% for competence in competences %}
+      <lo class="Label">{{ competence.Title }}</lo>
+      <li class="Code">{{ competence.Id }}</li>
+      <br />
+    {% endfor %}
+    
+    <hr />
+    
+    <p>Quantity: {{ quantity }} competences.</p>
+    
+  </body>
 </html>

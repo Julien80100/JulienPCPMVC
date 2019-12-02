@@ -2,36 +2,36 @@
   <head>
     <title>Julien PCP </title>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../Style.css" />
   </head>
   
   <body>
-    <h3 align="center">
-       Nouvelle tache
-    </h3>
-    <br />
-      <form action="{{ path }}?c=tache&t=created" method="post">
-  <div>
-    <label for="description">Description de la tache : </label>
-    <p>
-    <textarea name="Description" id="Description" required ></textarea>
-    </p>
-  </div>
-  <div>
-    <label for="Date">Date : </label>
-    <input type="Date" name="Date" id="Date" required>
-  </div>
-  <div>
-   <select name="competences[]" multiple="true" size="10"> 
-     {% for competence in competences %}
-      <option value="{{ competence.id }}">{{ competence.title }}</option>
-     {% endfor %}
-     
-    </select> 
+    <h3 align="center">Nouvelle tache</h3>
     
-   </div>
-  <div>
-    <input type="submit" value="Valider">
-  </div>
+    <br />
+    
+    <form action="{{ path }}?c=tache&t=created" method="post">
+      <div>
+        <label for="description">Description de la tache : </label>
+        <p><textarea name="Description" id="Description" required ></textarea></p>
+      </div>
+
+      <div>
+        <label for="Date">Date : </label>
+        <input type="Date" name="Date" id="Date" required>
+      </div>
+
+      <div>
+        <select name="competences[]" multiple="true" size="10"> 
+        {% for competence in competences %}
+          <option value="{{ competence.id }}">{{ competence.title }}</option>
+        {% endfor %}
+        </select> 
+      </div>
+
+      <div>
+        <input type="submit" value="Valider">
+      </div>
     </form>
   </body>
 </html>
