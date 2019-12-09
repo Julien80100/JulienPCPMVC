@@ -1,13 +1,31 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title> Accueil Projet PCP</title>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="views/css/Style.css" />
   </head>
   
   <body>
+    <header class="header1">
+    <p>
+      Tests
+    </p>
+    </header>
     <h3>
       Page d'accueil
     </h3>
+    
+    {% if user is defined and user is not null %}
+      <p>
+        Bonjour {{user.username}}  
+      </p>
+    <h4>
+      <a href="?c=user&t=deconnected"> Déconnection </a>
+    </h4>
+    {% else %}
+      <a href="?c=user&t=connected"> Connection </a>
+    {% endif %}
     
     <ul>
       <li><a href="?c=tache&t=new" target="_self">Nouvelle tache</a></li>

@@ -9,3 +9,13 @@ body {
 .tache {
       color: green;
     }
+
+.header1 {
+    background-color: red;
+    display: flex;
+    height: 120px;
+    min-width: 120px;
+    align-items: center;
+    color: #fff;
+    text-shadow: #000 0 0 .2em;
+}

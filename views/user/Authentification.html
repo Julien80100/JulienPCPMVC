@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>PCP Authentification </title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../Style.css" />
+  </head>
+  
+  <body>
+    <h3 align="center">{{ ParamAuthentification }} </h3>
+    
+    <br />
+    
+    <form action="?c=user&t=connected" method="post">
+      <div>
+          <label for="username">Username :</label>
+          <input type="text" id="User" name="User">
+      </div>
+
+      <div>
+          <label for="password">Password :</label>
+          <input type="password" id="password" name="password" required>
+      </div>
+      
+      <h6><a href="?c=user&t=registration">Créer un compte</a></h6>
+      
+      <input type="submit" value="Connexion">
+    </form>
+    
+    {% if message is defined and message is not null %}
+        {{message}}
+    {% endif %}
+  </body>
+</html>

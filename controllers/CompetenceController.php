@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Models\Competences;
 use entity\Competence;
+use Entity\Request;
 
 class CompetenceController extends Controller
 {
@@ -12,9 +13,9 @@ class CompetenceController extends Controller
         echo "Hello Competence Page!";
     }
 
-      public function list($get, $post, $em)
+      public function list(Request $request)
     {
-        $competenceRepository = $em->getRepository('Entity\Competence');
+        $competenceRepository = $request->getEm->getRepository('Entity\Competence');
         $competences = $competenceRepository->findall();               
       echo $this->twig->render('list.html',
         [

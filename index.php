@@ -1,8 +1,19 @@
 <?php
+
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use Entity\Request;
+use Entity\User;
+
 require_once "vendor/autoload.php";
+
 // Create a simple "default" Doctrine ORM configuration for Annotations
+
+/**
+ * Démarrage de la session
+ */
+session_start();
+
 $isDevMode = true;
 $proxyDir = null;
 $cache = null;
@@ -10,25 +21,40 @@ $useSimpleAnnotationReader = false;
 $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/entity"), $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
 
 $conn = array(
+  
           'driver' => 'pdo_mysql',
           'user' => 'julien',
           'password' => '2018',
           'host' => 'localhost',
           'dbname' => 'julien',
+  
 );
+
 // obtaining the entity manager
 $entityManager = EntityManager::create($conn, $config);
-//
-$class = "Controllers\\" . (isset($_GET['c']) ? ucfirst($_GET['c']) . 'Controller' : 'IndexController');
+
+$class = "Controllers\\" . (isset($_GET['c']) ? ucfirst($_GET['c']) . 'Controller' : 'UserController');
 $target = isset($_GET['t']) ? $_GET['t'] : "index";
 $getParams = isset($_GET) ? $_GET : null;
 $postParams = isset($_POST) ? $_POST : null;
+$request = new Request();
+
+if (isset($_SESSION['id'])) {
+  
+  $user = $entityManager->getRepository(User::class)->find($_SESSION['id']);
+  $request->setUser($user);
+  
+}
+
+//$request = new Request($getParams, $postParams, $entityManager, $user);
+$request->setEm($entityManager);
+$request->setPost($postParams);
+$request->setGet($getParams);
+
 $params = [
-    "get"  => $getParams,
-    "post" => $postParams,
-    "entitymanager" => $entityManager,
-    "path" => 'http://195.154.118.169/julien/TP/'
+    "request" => $request,
 ];
+
 if (class_exists($class, true)) {
     $class = new $class();
     if (in_array($target, get_class_methods($class))) {

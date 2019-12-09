@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>PCP Authentification </title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../Style.css" />
+  </head>
+  
+  <body>
+    <h3 align="center">Inscription </h3>
+    
+    <br />
+    
+    <form action="?c=user&t=registered" method="post">
+      <div>
+          <label for="username">Nom d'utilisateur :</label>
+          <input type="text" id="username" name="username" required>
+      </div>
+      
+      <div>
+        <label for="email">E-mail :</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div>
+          <label for="password1">Mot de passe :</label>
+          <input type="password" id="password1" name="password1" required>
+      </div>
+
+      <div>
+          <label for="password2">Confirmation mot de passe :</label>
+          <input type="password" id="password2" name="password2" required>
+      </div>
+
+      <input type="submit" value="inscription">
+    </form>
+  </body>
+</html>

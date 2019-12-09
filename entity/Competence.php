@@ -1,10 +1,6 @@
 <?php
-
 namespace Entity;
-
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="competence")
@@ -25,7 +21,6 @@ class Competence
      * @ORM\Column(type="string") 
      */
     protected $title;
-
     /** 
      * @ORM\Column(type="string") 
      */
@@ -38,8 +33,6 @@ class Competence
      * @ORM\Column(type="string") 
      */
     protected $epreuve;
-
-
    /**
      * Get id.
      *
@@ -49,7 +42,6 @@ class Competence
     {
         return $this->id;
     }
-
     /**
      * Set type.
      *
@@ -60,10 +52,8 @@ class Competence
     public function setType($type)
     {
         $this->type = $type;
-
         return $this;
     }
-
     /**
      * Get type.
      *
@@ -73,7 +63,6 @@ class Competence
     {
         return $this->type;
     }
-
     /**
      * Set title.
      *
@@ -84,10 +73,8 @@ class Competence
     public function setTitle($title)
     {
         $this->title = $title;
-
         return $this;
     }
-
     /**
      * Get title.
      *
@@ -97,7 +84,6 @@ class Competence
     {
         return $this->title;
     }
-
     /**
      * Set declinaison.
      *
@@ -108,10 +94,8 @@ class Competence
     public function setDeclinaison($declinaison)
     {
         $this->declinaison = $declinaison;
-
         return $this;
     }
-
     /**
      * Get declinaison.
      *
@@ -121,7 +105,6 @@ class Competence
     {
         return $this->declinaison;
     }
-
     /**
      * Set activity.
      *
@@ -132,10 +115,8 @@ class Competence
     public function setActivity($activity)
     {
         $this->activity = $activity;
-
         return $this;
     }
-
     /**
      * Get activity.
      *
@@ -145,7 +126,6 @@ class Competence
     {
         return $this->activity;
     }
-
     /**
      * Set epreuve.
      *
@@ -156,10 +136,8 @@ class Competence
     public function setEpreuve($epreuve)
     {
         $this->epreuve = $epreuve;
-
         return $this;
     }
-
     /**
      * Get epreuve.
      *
@@ -169,6 +147,5 @@ class Competence
     {
         return $this->epreuve;
     }
-
     
 }

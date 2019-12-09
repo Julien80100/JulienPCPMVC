@@ -1,53 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Update - Tache</title>
-        <style>
-          body {
-            background-color: black;
-            color: yellow;
-          }
-          .tache {
-            color: green;
-          }
-        </style>
-    </head>
-    <body>
-      <h2>Détail de la tache : </h2>
-        <li class="tache"> {{ tache.date|date("d/m/Y") }} </li>
-        <li class="tache"> {{ tache.description }} </li>
-        <ul>
-          {% for competence in tache.competences %}
-            <li>{{ competence.title }}</li>
-          {% endfor %}
-        </ul>
-        <br />
-      
-  <hr>  
-      
-      <form action="?c=tache&t=updated&id={{ tache.id }}" method="post">
-  <div>
-    <label for="description">Description de la tache : </label>
-    <textarea name="Description" id="Description" required ></textarea>
-  </div>
-  <div>
-    <label for="Date">Date : </label>
-    <input type="Date" name="Date" id="Date" required>
-  </div>
-  <div>
-   <select name="competences[]" multiple="true" size="10"> 
-     {% for competence in competences %}
-      <option value="{{ competence.id }}">{{ competence.title }}</option>
-     {% endfor %}
-     
-    </select> 
+  <head>
+    <title>Modification tache</title>
+    <link rel="stylesheet" href="../Style.css" />
+  </head>
+  
+  <body>
+    <h2>Détail de la tache : </h2>
+    <li class="tache"> {{ tache.date|date("d/m/Y") }} </li>
+    <li class="tache"> {{ tache.description }} </li>
+ 
+    <ul>
+      {% for competence in tache.competences %}
+        <li>{{ competence.title }}</li>
+      {% endfor %}
+    </ul>
     
-   </div>
-  <div>
-    <input type="submit" value="Valider">
-  </div>
-    </form>
-
+    <br />
       
+    <hr>  
+      
+    <form action="?c=tache&t=updated&id={{ tache.id }}" method="post">
+      <div>
+        <label for="description">Description de la tache : </label>
+        <textarea name="Description" id="Description" required ></textarea>
+      </div>
+      
+      <div>
+        <label for="Date">Date : </label>
+        <input type="Date" name="Date" id="Date" required>
+      </div>
+      
+      <div>
+       <select name="competences[]" multiple="true" size="10"> 
+         {% for competence in competences %}
+           <option value="{{ competence.id }}">{{ competence.title }}</option>
+         {% endfor %}
+        </select> 
+       </div>
+      
+      <div>
+        <input type="submit" value="Valider">
+      </div>    
+    </form>      
   </body>
 </html>
