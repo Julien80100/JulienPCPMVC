@@ -25,6 +25,7 @@ class TacheController extends Controller
   
     public function new(Request $request)
       {
+        $em = $request->getEm();
         $competences = $em->getRepository("Entity\Competence")->findAll();
         echo $this->twig->render('form.html',
           [
@@ -35,13 +36,14 @@ class TacheController extends Controller
   
     public function created(Request $request)
     {
-      
+        $post = $request->getPost();
         $em = $request->getEm();
-    
+        $user = $request->getUser();
         $tache = new Tache;
         $tache->setDescription($post['Description']);
         $date = new \DateTime($post['Date']);
         $tache->setDate($date);
+        $tache->setAuthorid($user->getId());
         $em->persist($tache);
         $em->flush(); 
         $competences=$post['competences'];

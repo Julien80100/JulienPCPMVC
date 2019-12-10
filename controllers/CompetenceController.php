@@ -15,7 +15,7 @@ class CompetenceController extends Controller
 
       public function list(Request $request)
     {
-        $competenceRepository = $request->getEm->getRepository('Entity\Competence');
+        $competenceRepository = $request->getEm()->getRepository('Entity\Competence');
         $competences = $competenceRepository->findall();               
       echo $this->twig->render('list.html',
         [

@@ -5,12 +5,18 @@
   </head>
     
   <body>
-    <h2>List: </h2>
-    {% for competence in competences %}
-      <lo class="Label">{{ competence.Title }}</lo>
-      <li class="Code">{{ competence.Id }}</li>
-      <br />
-    {% endfor %}
+        <table border="2px">
+      <tr>
+        <td weight="400px"> Titre de la compétence </td>
+        <td> Type </td> 
+      </tr>
+
+        {% for competence in competences %}
+      <tr>
+          <td class="Label">{{ competence.title }}</td>
+          <td>{{ competence.type }}</td>
+      </tr>
+        {% endfor %}
     
     <hr />
     

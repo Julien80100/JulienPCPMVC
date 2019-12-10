@@ -25,13 +25,27 @@ class Tache
      * @ORM\Column(type="text") 
      */
     protected $description;
+    /**
+    * @ORM\ManyToOne(targetEntity="User")
+    */
+    protected $user;
   
     /**
      * @ORM\ManyToMany(targetEntity="Competence", inversedBy="taches")
      */
     protected $competences;
 
-    /**
+    public function addCompetences($competences)
+    {
+        foreach ($competences as $competence) {
+          $this->addCompetence($competence);
+        }
+        return $this;
+    }
+  
+  //******************************************************************************
+ 
+  /**
      * Constructor
      */
     public function __construct()
@@ -98,34 +112,27 @@ class Tache
     }
 
     /**
-     * Remove competence.
+     * Set user.
      *
-     * @param \Entity\Competence $competence
+     * @param \Entity\User|null $user
      *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @return Tache
      */
-    public function removeCompetence(\Entity\Competence $competence)
+    public function setUser(\Entity\User $user = null)
     {
-        return $this->competences->removeElement($competence);
-    }
-  
-    public function removeCompetences()
-    {
-        foreach ($this->competences as $competence) {
-          $this->removeCompetence($competence);
-        }
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get competences.
+     * Get user.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Entity\User|null
      */
-    public function getCompetences()
+    public function getUser()
     {
-        return $this->competences;
+        return $this->user;
     }
 
     /**
@@ -141,19 +148,27 @@ class Tache
 
         return $this;
     }
-  
-  
-  
-    public function addCompetences($competences)
-    {
-        foreach ($competences as $competence) {
-          $this->addCompetence($competence);
-        }
 
-        return $this;
+    /**
+     * Remove competence.
+     *
+     * @param \Entity\Competence $competence
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCompetence(\Entity\Competence $competence)
+    {
+        return $this->competences->removeElement($competence);
     }
 
-//     public function __toString() {
-//       return $this->description;
-//     }
+    /**
+     * Get competences.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCompetences()
+    {
+        return $this->competences;
+    }
+}
 }
