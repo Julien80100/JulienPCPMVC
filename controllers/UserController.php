@@ -40,14 +40,15 @@ class UserController extends Controller
   
   private function CheckForEmailWrong($email)
   {
-    $result = 0;
-    if ( preg_match ( " /^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$/ " , $email ) )
-      $Result = 1;
+    $result = false;
+    if ( preg_match ( "^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$^" , $email ))
+      $result = true;
     return($result);
   }
   
   public function registered(Request $request)
   {
+    $em = $request->getEm();
     $created = "Erreur lors de la création de l'utilisateur";
 
     $SamePassWord = $this->CheckForPasswordRegister($request->getPost()['password1'],$request->getPost()['password2']);
@@ -55,15 +56,19 @@ class UserController extends Controller
       $created = $created.", les mots de passe ne correspondent pas";
  
     $EmailIsGood = $this->CheckForEmailWrong($request->getPost()['email']);
-    if ($EmailIsGood == 0)
+    if (!$EmailIsGood)
       $created = $created.", l'email n'est pas bonne";
+//     $EmailIsGood = 1;
     
-    if ($SamePassWord == 1 && $EmailIsGood == 1) {  
+    if ($SamePassWord == 1 && $EmailIsGood) {  
       $user = new User;
       $user->SetUsername($request->getPost()['username']);
       $user->SetPassword($request->getPost()['password1']);
       $user->SetEmail($request->getPost()['email']);
+      $user->SetQuestion($request->getPost()['question']);
+      $user->SetAnswer($request->getPost()['reponse']);
       $user->SetRole(1);
+      $user->setIsConnected(false);
       $em->persist($user);
       $em->flush();
       $created = "Création de l'utilisateur réussi";
@@ -76,12 +81,12 @@ class UserController extends Controller
     
       $post     =  $request->getPost();
       $em       =  $request->getEm();
-      $message  =  null;
+      $message  =  NULL;
       
-      if ( count( $request->getPost() ) > 0 ) {
+      if ( count( $request->getPost() ) > 0) {
        
           $user =  $em->getRepository(User::class)->findOneBy([
-                'username'  =>  $post['User'],
+                'username'  =>  $post['username'],
           ]);
 
           if ( null !== $user ) {
@@ -140,4 +145,165 @@ class UserController extends Controller
      
   }
   
+  public function admin($request)
+  {
+    $em = $request->getEm()->getRepository('Entity\User');
+    $users = $em->findall();
+    
+    $user = $request->getUser();
+    
+    if (NULL ==! $user && $user->getRole() == 3) {
+     echo $this->twig->render('adminpanel.html',
+     [
+       'users' => $users,
+       'activeuser' => $user,
+       'quantity' => count($users)
+     ]);  
+    } else {
+      header('Location: ?c=user&t=index');
+    }
+      
+  }
+ 
+  public function lostpassword($request)
+  {
+    echo $this->twig->render('LostPassword.html', []);
+  }
+  
+  public function lostusername($request)
+  {
+    echo $this->twig->render('LostUsername.html', []); 
+  }
+  
+  public function changepasswordafterlost($request)
+  {
+    $em = $request->getEm();
+    $post = $request->getPost();
+    $get = $request->getGet();
+    $message = "Cet utilisateur n'existe pas";
+    
+    $newpassword = $post['password'];
+    $question = $post['question'];
+    $answer = $post['reponse'];
+    
+    $user =  $em->getRepository(User::class)->findOneBy([
+      'username' => $post['user'],
+      'question' => $post['question'],
+      'answer' => $post['reponse']
+    ]);
+      
+    if (NULL ==! $user) {
+      $user->SetPassword($newpassword);
+      $message = "Le mot de passe a bien était changé pour l'utilisateur ".$user->getUsername();
+      $em->persist($user);
+      $em->flush();
+    }
+      
+    echo $this->twig->render('Authentification.html',[
+             'message'  => $message
+    ]);       
+  }
+  
+  public function getusernameafterlost($request)
+  {
+
+    $em = $request->getEm();
+    $post = $request->getPost();
+    $message = "Cet utilisateur n'existe pas";
+    
+    $email = $post['email'];
+    $password = $post['password'];
+    $question = $post['question'];
+    $answer = $post['reponse'];
+    
+    $user =  $em->getRepository(User::class)->findOneBy([
+      'email' => $post['email'],
+      'password' => $post['password'],
+      'question' => $post['question'],
+      'answer' => $post['reponse']
+    ]);
+      
+    if (NULL ==! $user) {
+      $message = "Votre nom d'utilisateur est ".$user->getUsername();
+    echo $this->twig->render('Authentification.html',[
+             'message'  => $message
+    ]);       
+    } else {
+      header('Location: ?c=user&t=index');
+    }
+  }
+    
+  public function editbyadmin($request)
+  {
+    $em = $request->getEm();
+    $post = $request->getPost();
+    $get = $request->getGet();
+    
+    $user = $em->getRepository(User::class)->findOneBy([
+      'id' => $get['id'],
+    ]);
+      
+      if (NULL !== $user){
+        $user->SetRole($post['rolechoice']);
+        $em->persist($user);
+        $em->flush();
+        header('Location: ?c=user&t=admin');
+    }
+  }
+  
+  public function delete($request)
+  {
+    $em = $request->getEm();
+    $get = $request->getGet(); 
+    
+    $user = $em->getRepository(User::class)->findOneBy([
+      'id' => $get['id'],
+    ]);
+    
+    if (NULL !== $user){
+      $em->remove($user);
+      $em->flush();
+      $this->admin($request);
+    }
+  }
+  
+  public function addbyadmin($request)
+  {
+    $em = $request->getEm()->getRepository('Entity\User');
+    $users = $em->findall();
+    
+    $user = $request->getUser();
+    
+    if (NULL ==! $user && $user->getRole() == 3) {
+     echo $this->twig->render('CreateUserByAdmin.html', [
+       'user' => $user,
+     ] ); 
+    } else {
+      header('Location: ?c=user&t=index');
+    }
+  }
+  
+  public function createdbyadmin($request)
+  {
+    
+    $em = $request->getEm();
+    
+    $user = $request->getUser();
+    
+    if (NULL ==! $user && $user->getRole() == 3) {
+      $newuser = new User;
+      $newuser->SetUsername($request->getPost()['username']);
+      $newuser->SetPassword($request->getPost()['password1']);
+      $newuser->SetEmail($request->getPost()['email']);
+      $newuser->SetQuestion($request->getPost()['question']);
+      $newuser->SetAnswer($request->getPost()['reponse']);
+      $newuser->SetRole(1);
+      $newuser->setIsConnected(false);
+      $em->persist($newuser);
+      $em->flush(); 
+      $this->admin($request);
+    } else {
+      header('Location: ?c=user&t=index');
+    }
+  }
 }

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tache liste</title>
+    <link rel="stylesheet" href="views/css/Style.css" />
+    <link rel="stylesheet" href="views/css/Bootstrap.css" />
+    
+    <style type="text/css">
+      body{
+        color: white
+      }
+      td{
+        color: white;
+      }
+    </style>
+
+  </head>
+
+  <body>  
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <span class="navbar-brand">Projet BTS-SIO</span>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+  
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="?c=user&t=index">Acceuil <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+          
+          <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{user.username}} </h6></span>
+          
+          <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
+            <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
+          </form>
+        
+        </div>
+      
+      </nav>
+    </header>
+      
+    <form method="post" action="?c=tache&t=new">  
+        <button type="submit" class="newtachebutton btn btn-danger"> Nouvelle taches</button>
+    </form>
+    
+    <br />
+    
+    <p>Quantité: {{ quantity }} taches.</p>
+    <table border="2px" class="table table-striped table-hover Listing well" style="width:90%">
+      <caption class="TitreTableauListing">Liste des taches:</caption>
+      <tr>
+        <th class="EnteteListing"> Compétence </th>
+        <th class="EnteteListing"> Description </th>
+        <th class="EnteteListing"> Date </th>
+        <th class="EnteteListing"> Utilisateur </th>
+        <th class="EnteteListing"> Option </th> 
+      </tr>
+      
+      {% for tache in taches %}
+        {% if tache.user.id == user.id %}
+          <tr>
+            <td class="LigneListing">
+              <ul>
+                {% for competence in tache.competences %}
+                  <li>{{ competence.title }}</li>
+                {% endfor %}
+              </ul>
+            </td>
+            <td class="LigneListing"> {{ tache.description }}  </td>
+            <td class="LigneListing"> {{ tache.date|date("d/m/Y") }} </td>
+            <td class="LigneListing"> {{ tache.user.username }}</td>
+
+            {% if tache.user.id == user.id %}
+              <td class="LigneListing">
+                <form method="post" action="?c=tache&t=edit&id={{tache.id}}">
+                  <button type="submit" class="btn btn-outline-danger">Editer</button>
+                </form>
+
+                <form method="post" action="?c=tache&t=remove&id={{tache.id}}">
+                  <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+              </td>
+            </tr>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </table>
+  </body>
+</html>

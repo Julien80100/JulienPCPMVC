@@ -1,37 +1,68 @@
 <html>
   <head>
-    <title> Creation de tache </title>
+    <title>Projet : Creation tache </title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../Style.css" />
+    <link rel="stylesheet" href=" views/css/Bootstrap.css" />
+    <link rel="stylesheet" href=" views/css/Style.css" />
   </head>
   
   <body>
-    <h3 align="center">Nouvelle tache</h3>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <span class="navbar-brand">Projet BTS-SIO</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="?c=user&t=index">Acceuil <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+          <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{user.username}} </h6></span>
+          <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
+            <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
+          </form>
+        </div>
+      </nav>
+    </header>
     
     <br />
     
-    <form action="{{ path }}?c=tache&t=created" method="post">
-      <div>
-        <label for="description">Description de la tache : </label>
-        <p><textarea name="Description" id="Description" required ></textarea></p>
-      </div>
+    <br />
+    <div class="container col-lg-offset-2 col-9">
+      
+      <form class="well" action="{{ path }}?c=tache&t=created" method="post">
 
-      <div>
-        <label for="Date">Date : </label>
-        <input type="Date" name="Date" id="Date" required>
-      </div>
+        <h3 align="center"><font color="white">Nouvelle tache</font></h3>
 
-      <div>
-        <select name="competences[]" multiple="true" size="10"> 
-        {% for competence in competences %}
-          <option value="{{ competence.id }}">{{ competence.title }}</option>
-        {% endfor %}
-        </select> 
-      </div>
+        <div class="form-group">
+          <label for="titre"><font color="white">titre de la tache :</font></label>
+          <p><input name="titre" id="titre" style="width:400px" required ></input></p>
+        </div>
+        
+        <div class="form-group">
+          <label for="description"><font color="white">Description de la tache :</font></label>
+          <p><textarea name="Description" id="Description" style="width:400px"required ></textarea></p>
+        </div>
 
-      <div>
-        <input type="submit" value="Valider">
-      </div>
-    </form>
+        <div class="form-group">
+          <label for="Date"><font color="white">Date :</font></label>
+          <p><input type="Date" name="Date" id="Date" required></p>
+        </div>
+
+        <div class="form-group">
+          <label for="Competence"><font color="white">Competences :</font></label>
+          <select name="competences[]" multiple="true" size="10"> 
+          {% for competence in competences %}
+            <option value="{{ competence.id }}">{{ competence.title }}</option>
+          {% endfor %}
+          </select> 
+        </div>
+
+        <button type="submit" class="btn btn-outline-success"> Valider </button>
+      </form>
+    </div>
   </body>
 </html>

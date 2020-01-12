@@ -1,38 +1,50 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Accueil Projet PCP</title>
+    <title> Projet BTS : Accueil</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="views/css/Style.css" />
+    <link rel="stylesheet" href="views/css/Bootstrap.css" />
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   </head>
   
   <body>
-    <header class="header1">
-    <p>
-      Tests
-    </p>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <span class="navbar-brand">Projet BTS-SIO</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="?c=user&t=index">Acceuil <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+          <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{user.username}} </h6></span>
+          <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
+            <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
+          </form>
+        </div>
+      </nav>
     </header>
-    <h3>
-      Page d'accueil
-    </h3>
-    
-    {% if user is defined and user is not null %}
-      <p>
-        Bonjour {{user.username}}  
-      </p>
-    <h4>
-      <a href="?c=user&t=deconnected"> Déconnection </a>
-    </h4>
-    {% else %}
-      <a href="?c=user&t=connected"> Connection </a>
-    {% endif %}
-    
-    <ul>
-      <li><a href="?c=tache&t=new" target="_self">Nouvelle tache</a></li>
-      <li><a href="?c=tache&t=list" target="_self">Liste des taches</a></li>
-      <br />
-      <li><a href="?c=competence&t=list" target="_self">Liste des compétences</a></li>
-    </ul>
+     <div class="text-center">
+        <ul style="list-style-type: none">
+          <li><h2 style="color:white;text-shadow: black 3px 3px;" class="text-center"><i>Page d'accueil</i></h2></li>
+          <br />
+          <li><h4><a href="?c=tache&t=listuser" target="_self" style="color:white">Liste des taches</a></h4></li>
+          <li><h4><a href="?c=tache&t=new" target="_self" style="color:white">Nouvelle tache</a></h4></li>
+          <br />
+          <li><h4><a href="?c=competence&t=list" target="_self" style="color:white">Liste des compétences</a></h4></li>
+          {% if user.role == 3 %}
+          <hr color="white">
+          <li><h4><a href="?c=user&t=admin" style="color:white"> Panel administrateur </a></h4></li>
+          {% endif %}
+        </ul>
+    </div>
     
   </body>
 </html>

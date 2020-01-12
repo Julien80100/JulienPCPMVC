@@ -41,6 +41,17 @@ class User
      */
     private $IsConnected;
   
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $question;
+  
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $answer;
+  
+  
     public function __toString()
     {
       return $this->username;    
@@ -174,5 +185,53 @@ class User
     public function getIsConnected()
     {
         return $this->IsConnected;
+    }
+  
+     /**
+     * Set question.
+     *
+     * @param int $question
+     *
+     * @return User
+     */
+    public function setQuestion($question)
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * Get question.
+     *
+     * @return int
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
+
+    /**
+     * Set answer.
+     *
+     * @param string $answer
+     *
+     * @return User
+     */
+    public function setAnswer($answer)
+    {
+        $this->answer = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Get answer.
+     *
+     * @return string
+     */
+    public function getAnswer()
+    {
+        return $this->answer;
     }
 }

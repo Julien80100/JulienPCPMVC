@@ -1,33 +1,71 @@
 <html>
   <head>
-    <title>PCP Authentification </title>
+    <title>Projet : Authentification </title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="../Style.css" />
+    <link rel="stylesheet" href=" views/css/Bootstrap.css" />
+    <style type="text/css">
+      body{
+        background-color: grey;
+        background-image: url("http://www.maximumwall.com/wp-content/uploads/2016/11/fond-ecran-wallpaper-image-arriere-plan-abstrait-gris-15.jpg"); 
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-attachment: fixed;
+      }
+      .container{
+        margin-top: 50px;
+/*         border: 2px dotted red; */
+        align-content:"center";
+      }
+      .well{
+        background: rgba(10,5,3,0.4);
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 5px;
+        padding-bottom: 10px;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 10px 10px 20px red;
+      }
+      
+      
+    </style>
   </head>
   
   <body>
-    <h3 align="center">{{ ParamAuthentification }} </h3>
+    <h3 align="center"><font color="white"> Authentification </font></h3>
+    <h4 align="center"> <u>{{ParamAuthentification}}</u></h4>
     
     <br />
     
-    <form action="?c=user&t=connected" method="post">
-      <div>
-          <label for="username">Username :</label>
-          <input type="text" id="User" name="User">
-      </div>
+      <div class="container col-lg-offset-3 col-lg-6">
+        <form class="well" action="?c=user&t=connected" method="post">
+        
+          <div class="form-group">
+              <label for="username"><font color="white">Nom d'utilisateur :</font></label>
+              <input type="text" id="username" name="username" class="form-control">
+              <hr color="red"/>
+          </div>
 
-      <div>
-          <label for="password">Password :</label>
-          <input type="password" id="password" name="password" required>
+          <div class="form-group">
+            <label for="password"><font color="white">Mot de passe :</font></label>
+              <input type="password" id="password" name="password" class="form-control" required>
+          </div>
+
+
+          <button class="btn btn-danger">Se connecter </button>
+      </form>
+        <h6><a href="?c=user&t=registration"><font color="lightblue">Créer un compte</font></a></h6>
+        <h6><a href="?c=user&t=lostpassword"><font color="lightblue">Des problèmes pour vous connecter ?</font></a></h6>
       </div>
-      
-      <h6><a href="?c=user&t=registration">Créer un compte</a></h6>
-      
-      <input type="submit" value="Connexion">
-    </form>
     
-    {% if message is defined and message is not null %}
-        {{message}}
-    {% endif %}
+    <div class="container-fluid">
+      <div class="col text-center">
+          {% if message is defined and message is not null %}
+            <span class="badge badge-danger" style="text-align:center"><h4 ><b><u><font color='white'>
+                {{message}}
+            </font></u></b></h4></span>
+          {% endif %}
+      </div>
+    </div>
   </body>
 </html>
