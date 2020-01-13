@@ -50,7 +50,7 @@ class Request
   
   public function getGet()
   {
-    return $this->get();
+    return $this->get;
   }
   
   public function getUser()

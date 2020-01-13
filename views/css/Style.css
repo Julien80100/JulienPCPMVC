@@ -1,21 +1,109 @@
 body {
-	background-color: #C5C2C1; 
-/*   background-repeat: no-repeat; */
-/*   background-size: 100%; */
-/*   background-attachment: fixed; */
-  color: yellow;
-	/*Arrière plan de la page*/
+  background-color: #454545;
+  background-image: url("http://www.maximumwall.com/wp-content/uploads/2016/11/fond-ecran-wallpaper-image-arriere-plan-abstrait-gris-15.jpg"); 
+  background-repeat: no-repeat;
+  max-height: 100%;
+  max-width: 100%;
+  background-attachment: fixed;
+}
+.well{
+  background: rgba(10,5,3,0.4);
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 10px 10px 20px red;
+}
+.warning {
+  color: red;
+  text-decoration: underline;
 }
 .tache {
       color: green;
     }
 
-.header1 {
+.HeaderStyle {
     background-color: red;
     display: flex;
-    height: 120px;
-    min-width: 120px;
+    height: 100px;
+    width: 100%;
     align-items: center;
     color: #fff;
-    text-shadow: #000 0 0 .2em;
+}
+
+.HelloHeader {
+  height: 30px;
+  font-style: underline;
+  text-align: left;
+}
+
+.LogStyleHeader{
+  text-align: right;
+  height: 20px;
+}
+
+div#HeaderLeft{
+  float: Left;
+  margin-left: 10px;
+  width: 250px;
+
+/*   background-color: green; */
+}
+div#HeaderRight{
+  float: Right;
+  position: absolute;
+  right: 0px;
+  margin-right: 10px;
+/*   width: 200px; */
+/*   background-color: yellow; */
+}
+
+.Listing { /* le quadrillage externe */
+  border: 3px double red; /* Bordure du tableau double et bleue */
+  margin: auto; /* Centrer horizontalement le tableau */
+  border-collapse: collapse; /* éviter d'avoir un quadrillage double */
+  background: rgba(10,5,3,0.4);
+  color: white;
+}
+.EnteteListing { /* Les cellules d'en-têtes */
+border: 2px solid red;
+color: white;
+font-size: 1.2em;
+font-family: "Trebuchet MS";
+background-color: grey;
+}
+.LigneListing { /* Les cellules normales */
+border: 2px solid red;
+font-family: "Comic Sans MS";
+font-size: 0.8em;
+padding: 8px; /* Remplissage de 8 pixels pour éviter que
+le texte touche les bordures */
+vertical-align: middle; /* Centrer le contenu des cellules verticalement */
+text-align: center; /* Centrer le contenu des cellules horizontalement */
+}
+.TitreTableauListing { /* la légende du tableau */
+font-family: "Times New Roman";
+font-weight: bold;
+font-size: 140%;
+color: white;
+margin-left: auto; /* pour centrer la légende */
+margin-right: auto; /* pour centrer la légende */
+margin-bottom: 4px; /* titre placé à 4px au-dessus du tableau */
+}
+.LabelForm {
+  font-color: white;
+  text-decoration: underline;
+}
+.newtachebutton {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.AccueilFont, AccueilFont:hover {
+  color: white;
+  font-size : 25px;
+}
+AccueilFont:focus {
+  color: rgb(240,250,250);
 }

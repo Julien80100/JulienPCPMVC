@@ -1,44 +1,43 @@
 <html>
   <head>
-    <title>Projet : Inscription </title>
+    <title>Projet : Creation utilisateur </title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href=" views/css/Bootstrap.css" />
-    <style type="text/css">
-      body{
-        background-color: grey;
-        background-image: url("http://www.maximumwall.com/wp-content/uploads/2016/11/fond-ecran-wallpaper-image-arriere-plan-abstrait-gris-15.jpg"); 
-        background-repeat: no-repeat;
-        background-size: 100%;
-        background-attachment: fixed;
-      }
-      .container{
-        margin-top: 50px;
-/*         border: 2px dotted red; */
-        align-content:"center";
-      }
-      .well{
-        background: rgba(10,5,3,0.4);
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-top: 5px;
-        padding-bottom: 10px;
-        border: none;
-        border-radius: 15px;
-        box-shadow: 10px 10px 20px red;
-      }
-      
-      
-    </style>
+    <link rel="stylesheet" href=" views/css/Style.css" />
   </head>
   
   
   <body>
-    <font color="white"><h3 align="center">Inscription</h3></font>
-    <h2 align="center"><a href="?c=user&t=connected"><font color="white"><u>Retour</u></font></a></h2>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <span class="navbar-brand">Projet BTS-SIO</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="?c=user&t=index">Acceuil <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+          <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{activeuser.username}} </h6></span>
+          <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
+            <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
+          </form>
+        </div>
+      </nav>
+    </header>
     
+    <br />
+    
+    <form method="post" action="?c=user&t=admin">
+      <button style="margin-left:20px" type="submit" class="btn btn-outline-light">Retour</button>
+    </form>
+      
     <div class="container col-lg-offset-3 col-lg-6">
     
-      <form class="well" action="?c=user&t=registered" method="post">
+      <form class="well" action="?c=user&t=createdbyadmin" method="post">
         
         <div class="form-group">
             <label for="username"><font color="white">Nom d'utilisateur :</font></label>
@@ -53,11 +52,6 @@
         <div class="form-group">
           <label for="password1"><font color="white">Mot de passe :</font></label>
             <input class="form-control" type="password" id="password1" name="password1" required>
-        </div>
-
-        <div class="form-group">
-          <label for="password2"><font color="white">Confirmation mot de passe :</font></label>
-            <input class="form-control" type="password" id="password2" name="password2" required>
         </div>
         
         <br />
@@ -79,7 +73,7 @@
           <input class="form-control" type="text" id="reponse" name="reponse" required>
         </div>
 
-        <button class="btn btn-danger">Inscription </button>
+        <button type="submit" class="btn btn-danger">Création de l'utilisateur </button>
       </form>
     </div>
   </body>

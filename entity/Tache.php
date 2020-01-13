@@ -1,10 +1,6 @@
 <?php
-
 namespace Entity;
-
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="tache")
@@ -25,6 +21,10 @@ class Tache
      * @ORM\Column(type="text") 
      */
     protected $description;
+     /** 
+     * @ORM\Column(type="string") 
+     */
+    protected $libelle;
     /**
     * @ORM\ManyToOne(targetEntity="User")
     */
@@ -34,7 +34,7 @@ class Tache
      * @ORM\ManyToMany(targetEntity="Competence", inversedBy="taches")
      */
     protected $competences;
-
+  
     public function addCompetences($competences)
     {
         foreach ($competences as $competence) {
@@ -42,6 +42,16 @@ class Tache
         }
         return $this;
     }
+  
+    public function removeCompetences($competences)
+    {
+        foreach ($competences as $competence) {
+          $this->removeCompetence($competence);
+        }
+        return $this;
+    }
+  
+
   
   //******************************************************************************
  
@@ -52,7 +62,6 @@ class Tache
     {
         $this->competences = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
     /**
      * Get id.
      *
@@ -62,7 +71,6 @@ class Tache
     {
         return $this->id;
     }
-
     /**
      * Set date.
      *
@@ -73,10 +81,8 @@ class Tache
     public function setDate($date)
     {
         $this->date = $date;
-
         return $this;
     }
-
     /**
      * Get date.
      *
@@ -86,7 +92,6 @@ class Tache
     {
         return $this->date;
     }
-
     /**
      * Set description.
      *
@@ -97,10 +102,8 @@ class Tache
     public function setDescription($description)
     {
         $this->description = $description;
-
         return $this;
     }
-
     /**
      * Get description.
      *
@@ -110,7 +113,29 @@ class Tache
     {
         return $this->description;
     }
+      /**
+     * Set libelle.
+     *
+     * @param string $libelle
+     *
+     * @return Tache
+     */
+    public function setLibelle($libelle)
+    {
+        $this->libelle = $libelle;
 
+        return $this;
+    }
+
+    /**
+     * Get libelle.
+     *
+     * @return string
+     */
+    public function getLibelle()
+    {
+        return $this->libelle;
+    }
     /**
      * Set user.
      *
@@ -121,10 +146,8 @@ class Tache
     public function setUser(\Entity\User $user = null)
     {
         $this->user = $user;
-
         return $this;
     }
-
     /**
      * Get user.
      *
@@ -134,7 +157,6 @@ class Tache
     {
         return $this->user;
     }
-
     /**
      * Add competence.
      *
@@ -145,10 +167,8 @@ class Tache
     public function addCompetence(\Entity\Competence $competence)
     {
         $this->competences[] = $competence;
-
         return $this;
     }
-
     /**
      * Remove competence.
      *
@@ -160,7 +180,6 @@ class Tache
     {
         return $this->competences->removeElement($competence);
     }
-
     /**
      * Get competences.
      *
@@ -170,5 +189,4 @@ class Tache
     {
         return $this->competences;
     }
-}
 }

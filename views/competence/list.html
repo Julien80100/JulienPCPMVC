@@ -1,26 +1,68 @@
+
+
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MVC Test - Index</title>
-  </head>
+    <title>Tache liste</title>
+    <link rel="stylesheet" href="views/css/Style.css" />
+    <link rel="stylesheet" href="views/css/Bootstrap.css" />
     
-  <body>
-        <table border="2px">
+    <style type="text/css">
+      body{
+        color: white
+      }
+      td{
+        color: white;
+      }
+    </style>
+
+  </head>
+
+  <body>  
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <span class="navbar-brand">Projet BTS-SIO</span>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+  
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="?c=user&t=index">Acceuil <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+          
+          <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{user.username}} </h6></span>
+          
+          <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
+            <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
+          </form>
+        
+        </div>
+      
+      </nav>
+    </header>
+    
+    <br />
+    
+    <p>Quantité: {{ quantity }} compétences.</p>
+    <table border="2px" class="table table-striped table-hover Listing well" style="width:90%">
+      <caption class="TitreTableauListing">Liste des competences:</caption>
       <tr>
+        <td> Acquis </td>
         <td weight="400px"> Titre de la compétence </td>
         <td> Type </td> 
       </tr>
-
-        {% for competence in competences %}
+      
+      {% for competence in competences %}
+      
       <tr>
-          <td class="Label">{{ competence.title }}</td>
-          <td>{{ competence.type }}</td>
+        <td> </td>
+        <td class="LigneListing"> {{ competence.title }}  </td>
+        <td class="LigneListing"> {{ competence.type }} </td>
       </tr>
-        {% endfor %}
-    
-    <hr />
-    
-    <p>Quantity: {{ quantity }} competences.</p>
-    
+      
+      
+      {% endfor %}
+    </table>
   </body>
 </html>

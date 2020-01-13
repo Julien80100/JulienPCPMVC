@@ -3,7 +3,6 @@ namespace Controllers;
 use Models\Taches;
 use Entity\Tache;
 use Entity\Request;
-
 class TacheController extends Controller
 {
     public function index()
@@ -12,27 +11,44 @@ class TacheController extends Controller
     }
   
     public function list(Request $request)
-    {
-      $tacheRepository = $request->getEm()->getRepository('Entity\Tache');
-      $taches = $tacheRepository->findAll();               
-      echo $this->twig->render('list.html',
-        [
-        "taches" => $taches,
-        "quantity" => count($taches)
-        ]
-      );
+{
+      $user = $request->getUser();
+      if (NULL ==! $user && $user->getIsConnected() == 1){ 
+
+
+        $tacheRepository = $request->getEm()->getRepository('Entity\Tache');
+        $taches = $tacheRepository->findAll();       
+        
+  
+        echo $this->twig->render('listglobal.html',
+          [
+          "taches" => $taches,
+          "quantity" => count($taches),
+          "user"  =>  $user,
+          ]
+        );
+      } else {
+        header('Location: ?c=user&t=connected');
+      }
     }
   
     public function new(Request $request)
       {
         $em = $request->getEm();
+      $user = $request->getUser();
+      
+      if (NULL !== $user && $user->getRole() !== 1) { 
         $competences = $em->getRepository("Entity\Competence")->findAll();
         echo $this->twig->render('form.html',
           [
+            "user" => $user,
             "competences" => $competences
           ]
         );
+      } else {
+        header('Location: ?c=user&t=index');
       }
+    }
   
     public function created(Request $request)
     {
@@ -40,15 +56,15 @@ class TacheController extends Controller
         $em = $request->getEm();
         $user = $request->getUser();
         $tache = new Tache;
+        $tache->setLibelle($post['titre']);
         $tache->setDescription($post['Description']);
         $date = new \DateTime($post['Date']);
         $tache->setDate($date);
-        $tache->setAuthorid($user->getId());
+        $tache->setUser($user);
         $em->persist($tache);
         $em->flush(); 
         $competences=$post['competences'];
         $competenceTab=[];
-
         foreach ($competences as $competenceId) {
           $competence = $em->getRepository("Entity\Competence")->find($competenceId);
           if ($competence) {
@@ -70,9 +86,13 @@ class TacheController extends Controller
   {
     
     $em = $request->getEm();
+    $get = $request->getGet();
     
-    $tache = $em->getRepository("Entity\Tache")->findOneBy(["id" => $get["id"]]);
     $competences = $em->getRepository("Entity\Competence")->findAll();
+    $tache = $em->getRepository("Entity\Tache")->findOneBy([
+        "id" => $get['id']
+    ]);
+    
     echo $this->twig->render('update.html',
       [
         "tache" => $tache,
@@ -84,28 +104,34 @@ class TacheController extends Controller
   
   public function updated(Request $request)
   {
+    $em = $request->getEm();
+    $get = $request->getGet();
+    $post = $request->getPost();
     
-    $tache = $request->getEm->getRepository("Entity\Tache")->find($request->getGet["id"]); 
-    $tache->removeCompetences();
-    $request->getEm->persist($tache);
-    $request->getEm->flush();
+    $tache = $em->getRepository("Entity\Tache")->findOneBy([
+        "id" => $get
+    ]);
+
+    $tache->removeCompetences($tache->getCompetences());
+    $em->persist($tache);
+    $em->flush();
     
-    $tache->setDescription($request->getPost['Description']);
-    $date = new \DateTime($request->getPost['Date']);
+    $tache->setDescription($post['Description']);
+    $date = new \DateTime($post['Date']);
     $tache->setDate($date);
     
-    $competences=$request->getPost['competences'];
+    $competences=$post['competences'];
     $competenceTab=[];
     
     foreach ($competences as $competenceId) {
-        $competence = $request->getEm->getRepository("Entity\Competence")->find($competenceId);
+        $competence = $em->getRepository("Entity\Competence")->find($competenceId);
         if ($competence) {
           $competenceTab[]=$competence;
         }
     }
     $tache->addCompetences($competenceTab);
-    $request->getEm->persist($tache);
-    $request->getEm->flush(); 
+    $em->persist($tache);
+    $em->flush(); 
     echo $this->twig->render('updated.html',
       [
         "tache" => $tache
@@ -115,8 +141,11 @@ class TacheController extends Controller
   
   public function remove(Request $request)
   {
-    $tache = $request->getEm->getRepository("Entity\Tache")->findOneBy(["id" => $request->getGet["id"]]);
-    $competences = $request->getEm->getRepository("Entity\Competence")->findAll();
+    $em = $request->getEm();
+    $get = $request->getGet();
+
+    $tache = $em->getRepository("Entity\Tache")->findOneBy(["id" => $get["id"]]);
+    $competences = $em->getRepository("Entity\Competence")->findAll();
     echo $this->twig->render('remove.html',
       [
         "tache" => $tache,
@@ -127,12 +156,38 @@ class TacheController extends Controller
   
   public function deleted(Request $request)
   {
-    $tache = $request->getEm->getRepository("Entity\Tache")->find($request->getGet["id"]); 
-    $request->getEm->remove($tache);
-//     $em->persist($tache);
-    $request->getEm->flush();
+    $em = $request->getEm();
+    $get = $request->getGet();
+
+    $tache = $em->getRepository("Entity\Tache")->find($get["id"]); 
+    $em->remove($tache);
+
+    $em->flush();
     
     $this->list($request);
 //     echo $this->twig->render('deleted.html',[]); 
   }
+  
+    public function listuser(Request $request)
+{
+      $user = $request->getUser();
+      if (NULL ==! $user && $user->getIsConnected() == 1){ 
+      
+      $userid = $user->getId();
+
+        $tacheRepository = $request->getEm()->getRepository('Entity\Tache');
+        $taches = $tacheRepository->findBy(array("user" => $userid));       
+        
+        
+        echo $this->twig->render('ListTacheUser.html',
+          [
+          "taches" => $taches,
+          "quantity" => count($taches),
+          "user"  =>  $user,
+          ]
+        );
+      } else {
+        header('Location: ?c=user&t=connected');
+      }
+    }
 }
