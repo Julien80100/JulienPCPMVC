@@ -7,7 +7,7 @@ class TacheController extends Controller
 {
     public function index()
     {
-      echo('tache page');
+        header('Location: ?c=user&t=connected');
     }
   
     public function list(Request $request)
@@ -74,11 +74,7 @@ class TacheController extends Controller
         $tache->addCompetences($competenceTab);
         $em->persist($tache);
         $em->flush(); 
-        echo $this->twig->render('created.html',
-            [
-              "tache" => $tache
-            ]
-        );
+        header('Location: ?c=tache&t=list');
       
     }
   
@@ -132,11 +128,7 @@ class TacheController extends Controller
     $tache->addCompetences($competenceTab);
     $em->persist($tache);
     $em->flush(); 
-    echo $this->twig->render('updated.html',
-      [
-        "tache" => $tache
-      ]
-    );
+    header('Location: ?c=tache&t=list');
   }
   
   public function remove(Request $request)

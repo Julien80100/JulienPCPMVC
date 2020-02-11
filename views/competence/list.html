@@ -1,12 +1,13 @@
-
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tache liste</title>
+    <title>Projet BTS : Tableau des compétences</title>
+    <meta charset="UTF-8" />
     <link rel="stylesheet" href="views/css/Style.css" />
     <link rel="stylesheet" href="views/css/Bootstrap.css" />
-    
+    <script type="text/javascript" src="views/js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <style type="text/css">
       body{
         color: white
@@ -17,51 +18,119 @@
     </style>
 
   </head>
-
-  <body>  
+  
+  <body>
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <span class="navbar-brand">Projet BTS-SIO</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-  
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="?c=user&t=index">Acceuil <span class="sr-only">(current)</span></a>
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=index">
+              <button  style="margin-right:15px;" class="btn btn-outline-light my-2 my-sm-0" type="submit">Accueil</button>
+            </form>
+            </li>
+            <li class="nav-item active">
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=tache&t=listuser">
+              <button style="margin-right:15px" class="btn btn-outline-light my-2 my-sm-0" type="submit">Vos tâches effectué</button>
+            </form>
+            </li>
+            <li class="nav-item active">
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=tache&t=list">
+              <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Tâches global</button>
+            </form>
             </li>
           </ul>
-          
           <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{user.username}} </h6></span>
-          
           <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
             <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
           </form>
-        
         </div>
-      
       </nav>
     </header>
     
     <br />
     
     <p>Quantité: {{ quantity }} compétences.</p>
+    
     <table border="2px" class="table table-striped table-hover Listing well" style="width:90%">
-      <caption class="TitreTableauListing">Liste des competences:</caption>
+      <caption class="TitreTableauListing">Liste des compétences obligatoires :</caption>
       <tr>
-        <td> Acquis </td>
-        <td weight="400px"> Titre de la compétence </td>
-        <td> Type </td> 
+        <th style="color:white" class="LigneListing" weight="400px">Compétence</th>
+        <th style="color:white" class="LigneListing"> Acquis </th>
+      </tr>
+        {% for competence in competences %}
+          {% if competence.epreuve == 'Obligatoire' %}
+            <tr>
+              <td class="LigneListing"> {{ competence.title }}  </td>
+              {% set valide = false %}
+              {% if competence.taches|length > 0 %}
+
+                {% for tache in competence.taches %}
+
+                  {% if tache.user.id == user.id %}
+                    {% set valide = true %}      
+                  {% else %}
+                    {% set valide = false %}
+                  {% endif %}
+
+                {% endfor %}
+
+                {% if valide == true %}
+                  <td class="LigneListing"> &#x2714;&#xFE0F; </td>
+                {% else %}
+                  <td class="LigneListing"> &#x274C;</td>
+                {% endif %}
+
+              {% else %}
+                <td class="LigneListing"> &#x274C;</td>
+              {% endif %}
+            </tr>
+          {% endif %}
+        {% endfor %}
+    </table>
+      
+    <table border="2px" class="table table-striped table-hover Listing well" style="width:90%">
+      <caption class="TitreTableauListing">Liste des competences facultatives :</caption>
+      <tr>
+        <th style="color:white" class="LigneListing" weight="400px">Compétence</th>
+        <th style="color:white" class="LigneListing"> Acquis </th>
+        <th style="color:white" class="LigneListing"> Code d'activité </th> 
       </tr>
       
-      {% for competence in competences %}
-      
-      <tr>
-        <td> </td>
-        <td class="LigneListing"> {{ competence.title }}  </td>
-        <td class="LigneListing"> {{ competence.type }} </td>
-      </tr>
-      
-      
+      {% for competence in competences %} 
+        {% if competence.epreuve == 'facultative' %}
+          <tr>
+            <td class="LigneListing"> {{ competence.title }}  </td>
+            {% set valide = false %}
+            {% if competence.taches|length > 0 %}
+
+              {% for tache in competence.taches %}
+
+                {% if tache.user.id == user.id %}
+                  {% set valide = true %}      
+                {% else %}
+                  {% set valide = false %}
+                {% endif %}
+
+              {% endfor %}
+
+              {% if valide == true %}
+                <td class="LigneListing"> &#x2714;&#xFE0F; </td>
+              {% else %}
+                <td class="LigneListing"> &#x274C;</td>
+              {% endif %}
+
+            {% else %}
+              <td class="LigneListing"> &#x274C;</td>
+            {% endif %}
+            <td class="LigneListing"> {{ competence.activity }} </td>
+          </tr>
+        {% endif %}
       {% endfor %}
     </table>
   </body>

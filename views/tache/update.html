@@ -1,47 +1,105 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Modification tache</title>
-    <link rel="stylesheet" href="../Style.css" />
+    <title>Projet BTS : Edition de tache</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="views/css/Style.css" />
+    <link rel="stylesheet" href="views/css/Bootstrap.css" />
+    <script type="text/javascript" src="views/js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <style type="text/css">
+      body{
+        color: white
+      }
+      td{
+        color: white;
+      }
+    </style>
+
   </head>
   
   <body>
-    <h2>Détail de la tache : </h2>
-    <li class="tache"> {{ tache.date|date("d/m/Y") }} </li>
-    <li class="tache"> {{ tache.description }} </li>
- 
-    <ul>
-      {% for competence in tache.competences %}
-        <li>{{ competence.title }}</li>
-      {% endfor %}
-    </ul>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <span class="navbar-brand">Projet BTS-SIO</span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=index">
+              <button  class="btn btn-outline-light my-2 my-sm-0" type="submit">Accueil</button>
+            </form>
+            </li>
+          </ul>
+          <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{user.username}} </h6></span>
+          <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
+            <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
+          </form>
+        </div>
+      </nav>
+    </header>
+      
+      <br />
+      
+    <div class="container col-lg-offset-3 col-lg-6 well">  
+      <h2><font color="white">Détail de la tache : </h2>
+      <li><font color="white"> <b><u>Titre :</u></b> &nbsp {{ tache.libelle }}</font></li>
+      <li><font color="white"> <b><u>Date :</u></b> &nbsp {{ tache.date|date("d/m/Y") }} </li>
+      <li><font color="white"> <b><u>Description :</u></b> &nbsp {{ tache.description }} </li>
+      
+      {% if tache.competences|length > 0 %}
+        <b><u>Compétence acquise :</u></b>
+      <ul>
+        {% for competence in tache.competences %}
+          <li><font color="white">{{ competence.title }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
     
-    <br />
-      
-    <hr>  
-      
-    <form action="?c=tache&t=updated&id={{tache.id}}" method="post">
-      <div>
-        <label for="description">Description de la tache : </label>
-        <textarea name="Description" id="Description" required ></textarea>
-      </div>
-      
-      <div>
-        <label for="Date">Date : </label>
-        <input type="Date" name="Date" id="Date" required>
-      </div>
-      
-      <div>
-       <select name="competences[]" multiple="true" size="10"> 
-         {% for competence in competences %}
-           <option value="{{ competence.id }}">{{ competence.title }}</option>
-         {% endfor %}
-        </select> 
-       </div>
-      
-      <div>
-        <input type="submit" value="Valider">
-      </div>    
-    </form>      
+      <hr color="white">  
+
+      <form action="?c=tache&t=updated&id={{tache.id}}" method="post">
+        
+        <div class="form-group">
+          <label for="libelle">Titre de la tache : </label>
+          <textarea class="form-control" name="libelle" id="libelle" required >{{ tache.libelle }}</textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description de la tache : </label>
+          <textarea class="form-control" name="Description" id="Description" required >{{ tache.description }}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="Date">Date : </label>
+          <input class="form-control" value='{{ tache.date|date("Y-m-d") }}' type="Date" name="Date" id="Date" required>
+        </div>
+
+        <div class="form-group">
+         <select class="form-control" name="competences[]" multiple="true" size="10"> 
+           {% for competence in competences %}
+             {% set flag = false %}
+             {% for tachecompetence in tache.competences %}
+               {% if competence.id == tachecompetence.id and not flag %}
+                 {% set flag = true %}
+                 <option value="{{ competence.id }}" selected>{{ competence.title }}</option>
+               {% endif %}
+             {% endfor %}
+               {% if not flag %}
+                 <option value="{{ competence.id }}">{{ competence.title }}</option>
+               {% endif %}
+           {% endfor %}
+          </select> 
+         </div>
+
+        <div>
+        <button type="submit" class="btn btn-outline-success"> Valider </button>
+        </div>    
+      </form>      
+    </div>
   </body>
 </html>

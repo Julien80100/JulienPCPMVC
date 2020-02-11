@@ -24,15 +24,15 @@ class Competence
     /** 
      * @ORM\Column(type="string") 
      */
-    protected $declinaison;
-    /** 
-     * @ORM\Column(type="string") 
-     */
     protected $activity;
     /** 
      * @ORM\Column(type="string") 
      */
     protected $epreuve;
+    /**
+     * @ORM\ManyToMany(targetEntity="Tache", mappedBy="competences")
+     */
+    protected $taches;
    /**
      * Get id.
      *
@@ -85,27 +85,6 @@ class Competence
         return $this->title;
     }
     /**
-     * Set declinaison.
-     *
-     * @param string $declinaison
-     *
-     * @return Competence
-     */
-    public function setDeclinaison($declinaison)
-    {
-        $this->declinaison = $declinaison;
-        return $this;
-    }
-    /**
-     * Get declinaison.
-     *
-     * @return string
-     */
-    public function getDeclinaison()
-    {
-        return $this->declinaison;
-    }
-    /**
      * Set activity.
      *
      * @param string $activity
@@ -147,5 +126,15 @@ class Competence
     {
         return $this->epreuve;
     }
+    /**
+     * Get taches.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTaches()
+    {
+        return $this->taches;
+    }
+  
     
 }

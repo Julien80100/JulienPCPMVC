@@ -60,13 +60,14 @@ class UserController extends Controller
       $created = $created.", l'email n'est pas bonne";
 //     $EmailIsGood = 1;
     
+    
     if ($SamePassWord == 1 && $EmailIsGood) {  
       $user = new User;
       $user->SetUsername($request->getPost()['username']);
-      $user->SetPassword($request->getPost()['password1']);
+      $user->SetPassword(base64_encode($request->getPost()['password1']));
       $user->SetEmail($request->getPost()['email']);
       $user->SetQuestion($request->getPost()['question']);
-      $user->SetAnswer($request->getPost()['reponse']);
+      $user->SetAnswer(base64_encode($request->getPost()['reponse']));
       $user->SetRole(1);
       $user->setIsConnected(false);
       $em->persist($user);
@@ -82,8 +83,16 @@ class UserController extends Controller
       $post     =  $request->getPost();
       $em       =  $request->getEm();
       $message  =  NULL;
+      $userActive = $request->getUser();
+    
+    if (NULL != $userActive){
+      echo $this->twig->render('accueil.html', [
+      'user'  =>  $userActive,
+      ]);
+      die;
+    }
       
-      if ( count( $request->getPost() ) > 0) {
+      if ( count($request->getPost()) > 0) {
        
           $user =  $em->getRepository(User::class)->findOneBy([
                 'username'  =>  $post['username'],
@@ -91,7 +100,7 @@ class UserController extends Controller
 
           if ( null !== $user ) {
             
-              if ( $user->getPassword() == $post['password'] ) {
+              if ( base64_decode($user->getPassword()) == $post['password'] ) {
 
                   $user->setIsConnected(true);
                   $em->persist($user);
@@ -142,6 +151,7 @@ class UserController extends Controller
       * Retour à l'index
       */
      header('Location: ?c=user&t=connected');
+    
      
   }
   
@@ -152,7 +162,7 @@ class UserController extends Controller
     
     $user = $request->getUser();
     
-    if (NULL ==! $user && $user->getRole() == 3) {
+    if (NULL !== $user && $user->getRole() == 3) {
      echo $this->twig->render('adminpanel.html',
      [
        'users' => $users,
@@ -182,18 +192,18 @@ class UserController extends Controller
     $get = $request->getGet();
     $message = "Cet utilisateur n'existe pas";
     
-    $newpassword = $post['password'];
+    $newpassword = base64_encode($post['password']);
     $question = $post['question'];
     $answer = $post['reponse'];
     
     $user =  $em->getRepository(User::class)->findOneBy([
       'username' => $post['user'],
       'question' => $post['question'],
-      'answer' => $post['reponse']
+      'answer' => base64_encode($post['reponse'])
     ]);
       
     if (NULL ==! $user) {
-      $user->SetPassword($newpassword);
+      $user->SetPassword(base64_encode($newpassword));
       $message = "Le mot de passe a bien était changé pour l'utilisateur ".$user->getUsername();
       $em->persist($user);
       $em->flush();
@@ -212,15 +222,15 @@ class UserController extends Controller
     $message = "Cet utilisateur n'existe pas";
     
     $email = $post['email'];
-    $password = $post['password'];
+    $password = base64_encode($post['password']);
     $question = $post['question'];
     $answer = $post['reponse'];
     
     $user =  $em->getRepository(User::class)->findOneBy([
       'email' => $post['email'],
-      'password' => $post['password'],
+      'password' => base64_encode($post['password']),
       'question' => $post['question'],
-      'answer' => $post['reponse']
+      'answer' => base64_encode($post['reponse'])
     ]);
       
     if (NULL ==! $user) {
@@ -228,7 +238,7 @@ class UserController extends Controller
     echo $this->twig->render('Authentification.html',[
              'message'  => $message
     ]);       
-    } else {
+    } else {  
       header('Location: ?c=user&t=index');
     }
   }
@@ -261,6 +271,13 @@ class UserController extends Controller
     ]);
     
     if (NULL !== $user){
+      $tacheRepository = $request->getEm()->getRepository('Entity\Tache');
+      $taches = $tacheRepository->findBy(array("user" => $user->getId()));
+      foreach ($taches as $tache) {
+        $em->remove($tache);
+        $em->flush();
+      }
+      
       $em->remove($user);
       $em->flush();
       $this->admin($request);
@@ -293,15 +310,15 @@ class UserController extends Controller
     if (NULL ==! $user && $user->getRole() == 3) {
       $newuser = new User;
       $newuser->SetUsername($request->getPost()['username']);
-      $newuser->SetPassword($request->getPost()['password1']);
+      $newuser->SetPassword(base64_encode($request->getPost()['password1']));
       $newuser->SetEmail($request->getPost()['email']);
       $newuser->SetQuestion($request->getPost()['question']);
-      $newuser->SetAnswer($request->getPost()['reponse']);
+      $newuser->SetAnswer(base64_encode($request->getPost()['reponse']));
       $newuser->SetRole(1);
       $newuser->setIsConnected(false);
       $em->persist($newuser);
       $em->flush(); 
-      $this->admin($request);
+      header('Location: ?c=user&t=admin');
     } else {
       header('Location: ?c=user&t=index');
     }

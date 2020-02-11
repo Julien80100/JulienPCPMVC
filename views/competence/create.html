@@ -48,37 +48,28 @@
     <br />
     <div class="container col-lg-offset-2 col-9">
       
-      <form class="well" action="{{ path }}?c=tache&t=created" method="post">
+      <form class="well" action="{{ path }}?c=competence&t=created" method="post">
 
-        <h3 align="center"><font color="white">Nouvelle tache</font></h3>
+        <h3 align="center"><font color="white">Nouvelle competence</font></h3>
 
         <div class="form-group">
-          <label for="titre"><font color="white">titre de la tache :</font></label>
-          <p><input  class="form-control" name="titre" id="titre"  required ></input></p>
+          <label for="titre"><font color="white">titre de la competence :</font></label>
+          <p><input  class="form-control" name="titre" id="titre"  required ></p>
         </div>
         
         <div class="form-group">
-          <label for="description"><font color="white">Description de la tache :</font></label>
-          <p><textarea  class="form-control" name="Description" id="Description" required ></textarea></p>
+          <label for="type"><font color="white">type :</font></label>
+          <p><input  class="form-control" name="type" id="type" value="activité" required ></p>
         </div>
 
         <div class="form-group">
-          <label for="Date"><font color="white">Date :</font></label>
-          <p><input  class="form-control" type="Date" name="Date" id="Date" required></p>
+          <label for="activity"><font color="white">Code activité :</font></label>
+          <p><input  class="form-control" name="activity" id="activity"></p>
         </div>
 
         <div class="form-group">
-          <label for="Competence"><font color="white">Competences :</font></label>
-          <select  class="form-control" name="competences[]" multiple="true" size="10"> 
-          {% for competence in competences %}
-            {% if competence.activity is not null %}
-              <option value="{{ competence.id }}">{{ competence.activity }} - {{ competence.title }} - {{ competence.epreuve }}</option>
-            {% else %}
-              <option value="{{ competence.id }}">{{ competence.title }} - {{ competence.epreuve }}</option>
-            {% endif %}
-            
-          {% endfor %}
-          </select> 
+          <label for="epreuve"><font color="white">epreuve :</font></label>
+          <p><input  class="form-control" name="epreuve" id="epreuve" Value="facultative" required></p>
         </div>
 
         <button type="submit" class="btn btn-outline-success"> Valider </button>

@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Projet BTS : Accueil</title>
+    <title>Projet BTS : Panel administrateur</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="views/css/Style.css" />
     <link rel="stylesheet" href="views/css/Bootstrap.css" />
+    <script type="text/javascript" src="views/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-     <style type="text/css">
+    <style type="text/css">
+      body{
+        color: white
+      }
       td{
         color: white;
       }
     </style>
+
   </head>
   
   <body>
@@ -26,7 +30,24 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="?c=user&t=index">Acceuil <span class="sr-only">(current)</span></a>
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=index">
+              <button  style="margin-right:15px;" class="btn btn-outline-light my-2 my-sm-0" type="submit">Accueil</button>
+            </form>
+            </li>
+            <li class="nav-item active">
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=competence&t=list">
+              <button style="margin-right:15px" class="btn btn-outline-light my-2 my-sm-0" type="submit">Tableau des compétences</button>
+            </form>
+            </li>
+            <li class="nav-item active">
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=tache&t=listuser">
+              <button style="margin-right:15px;" class="btn btn-outline-light my-2 my-sm-0" type="submit">Vos tâches effectué</button>
+            </form>
+            </li>
+            <li class="nav-item active">
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=tache&t=list">
+              <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Tâches global</button>
+            </form>
             </li>
           </ul>
           <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{activeuser.username}} </h6></span>
@@ -70,23 +91,29 @@
           {% else %}
               <select style="width:150px;height:30px" name="rolechoice" id="rolechoice" required>
                 <option value="1">visiteur</option>
-                <option value="2">utilisateur</option>
-                <option value="3">Admin</option>
+                {% if user.role == 2 %}
+                  <option value="2" selected>utilisateur</option>
+                {% else %}
+                  <option value="2">utilisateur</option>
+                {% endif %}
+                
+                {% if user.role == 3 %}
+                  <option value="3" selected>admin</option>
+                {% else %}
+                  <option value="3">admin</option>
+                {% endif %}
               </select>
           {% endif %}
           </td>
           <td class="LigneListing">
 
           {% if user.id == activeuser.id %}
-              <button type="submit" class="btn btn-outline-danger">Editer</button>
             </form>
           {% else %}
             <form method="post" action="?c=user&t=editbyadmin&id={{user.id}}">
               <button type="submit" class="btn btn-outline-danger">Editer</button>
             </form>
-            <form method="post" action="?c=user&t=delete&id={{user.id}}">
-              <button type="submit" class="btn btn-danger">Supprimer</button>
-            </form>
+              <button type="submit" class="btn btn-danger" onclick="confirmed('http://195.154.118.169/julien/ProjetPCP/?c=user&t=delete&id={{user.id}}')">Supprimer</button>
           {% endif %}
         </td>
       </tr>
