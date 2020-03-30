@@ -74,7 +74,7 @@ class TacheController extends Controller
         $tache->addCompetences($competenceTab);
         $em->persist($tache);
         $em->flush(); 
-        header('Location: ?c=tache&t=list');
+        header('Location: ?c=tache&t=listuser');
       
     }
   
@@ -182,4 +182,32 @@ class TacheController extends Controller
         header('Location: ?c=user&t=connected');
       }
     }
+  
+  public function listtuteur($request)
+  {
+      $get = $request->getGet();
+      $user = $request->getUser();
+      $userid = $user->getId();
+      if (NULL ==! $user && $user->getIsConnected() == 1){ 
+        $tacheRepository = $request->getEm()->getRepository('Entity\Tache');
+        $taches = $tacheRepository->findBy(array("user" => $userid));       
+        
+        $tuteuruser = $request->getEm()->getRepository('Entity\User')->findOneBy([
+      'tuteur' => $userid
+      ]);
+
+        echo $this->twig->render('ListTacheUser.html',
+          [
+          "taches" => $taches,
+          "quantity" => count($taches),
+          "user"  =>  $user,
+          'eleve' => $tuteuruser,
+          ]
+        );
+      } else {
+        header('Location: ?c=user&t=connected');
+      }
+    
+    
+  }
 }

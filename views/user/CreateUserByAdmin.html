@@ -86,6 +86,18 @@
           <label for="reponse"><font color="white">Réponse de la question secrète :</font></label>
           <input class="form-control" type="text" id="reponse" name="reponse" required>
         </div>
+        
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="role"><font color="black"> rôle </font></label>
+          </div>
+          <select class ="custom-select" id="role" name="role" required>
+              <option value="1"> visiteur</option>
+              <option value="2"> utilisateur</option>
+              <option value="3"> admin</option>
+              <option value="4"> tuteur</option>
+          </select> 
+        </div>
 
         <button type="submit" class="btn btn-danger">Création de l'utilisateur </button>
       </form>

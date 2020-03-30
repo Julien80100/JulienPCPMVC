@@ -77,11 +77,10 @@ background-color: grey;
 .LigneListing { /* Les cellules normales */
 border: 2px solid red;
 font-family: "Comic Sans MS";
-font-size: 0.8em;
+font-size: 0.9em;
 padding: 8px; /* Remplissage de 8 pixels pour éviter que
 le texte touche les bordures */
 vertical-align: middle; /* Centrer le contenu des cellules verticalement */
-text-align: center; /* Centrer le contenu des cellules horizontalement */
 }
 .TitreTableauListing { /* la légende du tableau */
 font-family: "Times New Roman";

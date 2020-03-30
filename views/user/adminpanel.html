@@ -82,7 +82,7 @@
       {% for user in users %}
         <tr>
           <td class="LigneListing">{{ user.username }}</td>
-          <td class="LigneListing">{% if user.role == 1 %} Visiteur {% elseif user.role == 2 %} Utilisateur {% elseif user.role == 3 %} Admin {% endif %}</td>
+          <td class="LigneListing">{% if user.role == 1 %} Visiteur {% elseif user.role == 2 %} Utilisateur {% elseif user.role == 3 %} Admin {% elseif user.role == 4 %} Tuteur {% endif %}</td>
 
           <td class="LigneListing">
             <form method="post" action="?c=user&t=editbyadmin&id={{user.id}}">
@@ -101,6 +101,12 @@
                   <option value="3" selected>admin</option>
                 {% else %}
                   <option value="3">admin</option>
+                {% endif %}
+
+                {% if user.role == 4 %}
+                  <option value="4" selected>tuteur</option>
+                {% else %}
+                  <option value="4">tuteur</option>
                 {% endif %}
               </select>
           {% endif %}

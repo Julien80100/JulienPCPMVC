@@ -51,6 +51,11 @@ class User
      */
     private $answer;
   
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $tuteur;
+  
   
     public function __toString()
     {
@@ -233,5 +238,28 @@ class User
     public function getAnswer()
     {
         return $this->answer;
+    }
+     /**
+     * Set question.
+     *
+     * @param int $question
+     *
+     * @return User
+     */
+    public function setTuteur($tuteur)
+    {
+        $this->tuteur = $tuteur;
+
+        return $this;
+    }
+
+    /**
+     * Get question.
+     *
+     * @return int
+     */
+    public function getTuteur()
+    {
+        return $this->tuteur;
     }
 }

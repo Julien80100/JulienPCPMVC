@@ -9,12 +9,17 @@ class UserController extends Controller
   
   public function index(Request $request)
   {
-      
+      $em = $request->getEm();      
       $user = $request->getUser();
+    
+      $eleves = $em->getRepository(User::class)->findBy([
+      'tuteur' => $user->getId(),
+    ]);
+        
     
     if (null !== $user) {
       echo $this->twig->render('accueil.html', [
-          
+          'elevescount' => count($eleves), 
           'user'  =>  $user,
         
       ]);
@@ -48,7 +53,19 @@ class UserController extends Controller
   
   public function registered(Request $request)
   {
+    
     $em = $request->getEm();
+    $user =  $em->getRepository(User::class)->findOneBy([
+      
+    'username' => $request->getPost()['username']
+    ]);
+    
+    if (NULL != $user) {
+      $created = "Cet utilisateur existe déjà";
+      echo $this->twig->render('Authentification.html',["message" => $created]);
+      die;
+    }
+    
     $created = "Erreur lors de la création de l'utilisateur";
 
     $SamePassWord = $this->CheckForPasswordRegister($request->getPost()['password1'],$request->getPost()['password2']);
@@ -69,6 +86,7 @@ class UserController extends Controller
       $user->SetQuestion($request->getPost()['question']);
       $user->SetAnswer(base64_encode($request->getPost()['reponse']));
       $user->SetRole(1);
+      $user->SetTuteur(0);
       $user->setIsConnected(false);
       $em->persist($user);
       $em->flush();
@@ -100,7 +118,7 @@ class UserController extends Controller
 
           if ( null !== $user ) {
             
-              if ( base64_decode($user->getPassword()) == $post['password'] ) {
+              if ( base64_decode($user->getPassword()) == $post['password']) {
 
                   $user->setIsConnected(true);
                   $em->persist($user);
@@ -191,7 +209,7 @@ class UserController extends Controller
     $post = $request->getPost();
     $get = $request->getGet();
     $message = "Cet utilisateur n'existe pas";
-    
+//     var_dump($post['password']); die;
     $newpassword = base64_encode($post['password']);
     $question = $post['question'];
     $answer = $post['reponse'];
@@ -314,13 +332,64 @@ class UserController extends Controller
       $newuser->SetEmail($request->getPost()['email']);
       $newuser->SetQuestion($request->getPost()['question']);
       $newuser->SetAnswer(base64_encode($request->getPost()['reponse']));
-      $newuser->SetRole(1);
+      $newuser->SetRole($request->getPost()['role']);
+      $newuser->SetTuteur(0);
       $newuser->setIsConnected(false);
       $em->persist($newuser);
       $em->flush(); 
       header('Location: ?c=user&t=admin');
     } else {
       header('Location: ?c=user&t=index');
+    }
+  }
+  
+  public function TuteurPanel($request)
+  {
+    $em = $request->getEm()->getRepository('Entity\User');
+    $user = $request->getUser();
+    $userList = $em->findall();
+    
+    if (NULL ==! $user && $user->getRole() == 4) {
+       echo $this->twig->render('UserListTuteur.html', [
+         'user' => $user,
+         'userlist' => $userList
+     ] );
+    }
+  }
+  
+  public function SetTuteur($request)
+  {
+    $em = $request->getEm();
+    $post = $request->getPost();
+    $get = $request->getGet();
+    $activeuser = $request->getUser();
+    $user = $em->getRepository(User::class)->findOneBy([
+      'id' => $get['id'],
+    ]);
+      
+      if (NULL !== $user){
+        $user->SetTuteur($activeuser->getId());
+        $em->persist($user);
+        $em->flush();
+        header('Location: ?c=user&t=TuteurPanel');
+    }
+  }
+  
+  public function RemoveTuteur($request)
+  {
+    $em = $request->getEm();
+    $post = $request->getPost();
+    $get = $request->getGet();
+    $activeuser = $request->getUser();
+    $user = $em->getRepository(User::class)->findOneBy([
+      'id' => $get['id'],
+    ]);
+      
+      if (NULL !== $user){
+        $user->SetTuteur(0);
+        $em->persist($user);
+        $em->flush();
+        header('Location: ?c=user&t=TuteurPanel');
     }
   }
 }
