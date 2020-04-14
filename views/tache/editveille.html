@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Projet BTS : Création de tache</title>
+    <title>Projet BTS : Accueil</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="views/css/Style.css" />
     <link rel="stylesheet" href="views/css/Bootstrap.css" />
@@ -15,6 +15,7 @@
       td{
         color: white;
       }
+
     </style>
 
   </head>
@@ -42,47 +43,38 @@
         </div>
       </nav>
     </header>
-    
+
     <br />
-    
-    <br />
+
     <div class="container col-lg-offset-2 col-9">
       
-      <form class="well" action="?c=tache&t=created" method="post">
+        <form class="well" action="?c=tache&t=updatedveille&id={{veille.id}}" method="post">
 
-        <h3 align="center"><font color="white">Nouvelle tache</font></h3>
+          <h3 align="center"><font color="white">{{ veille.libelle }} du {{ veille.date|date("d/m/Y") }}</font></h3>
 
-        <div class="form-group">
-          <label for="titre"><font color="white">titre de la tache :</font></label>
-          <p><input  class="form-control" name="titre" id="titre"  required ></input></p>
-        </div>
+          <div class="form-group">
+            <label for="titre"><font color="white">titre de la veille :</font></label>
+            <p><input  class="form-control" name="titre" id="titre" value="{{ veille.libelle }}" required ></input></p>
+
+            <div class="form-group">
+              <label for="description"><font color="white">Description de la veille :</font></label>
+              <p><textarea  class="form-control" name="Description" id="Description" style="height:25em;" required > {{ veille.description }} </textarea></p>
+            </div>
+
+            <div class="form-group">
+              <label for="Date"><font color="white">Date :</font></label>
+              <p><input  class="form-control" type="Date" name="Date" id="Date" required></p>
+            </div>
+
+          </div>
+
+          <button type="submit" class="btn btn-outline-success"> Valider </button>
         
-        <div class="form-group">
-          <label for="description"><font color="white">Description de la tache :</font></label>
-          <p><textarea  class="form-control" name="Description" id="Description" required ></textarea></p>
-        </div>
+        </form>
 
-        <div class="form-group">
-          <label for="Date"><font color="white">Date :</font></label>
-          <p><input  class="form-control" type="Date" name="Date" id="Date" required></p>
-        </div>
+      </div>
 
-        <div class="form-group">
-          <label for="Competence"><font color="white">Competences :</font></label>
-          <select  class="form-control" name="competences[]" multiple="true" size="10"> 
-          {% for competence in competences %}
-            {% if competence.activity is not null %}
-              <option value="{{ competence.id }}">{{ competence.activity }} - {{ competence.title }} - {{ competence.epreuve }}</option>
-            {% else %}
-              <option value="{{ competence.id }}">{{ competence.title }} - {{ competence.epreuve }}</option>
-            {% endif %}
+
             
-          {% endfor %}
-          </select> 
-        </div>
-
-        <button type="submit" class="btn btn-outline-success"> Valider </button>
-      </form>
-    </div>
-  </body>
+    </body>
 </html>

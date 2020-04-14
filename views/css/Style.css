@@ -106,3 +106,7 @@ margin-bottom: 4px; /* titre placé à 4px au-dessus du tableau */
 AccueilFont:focus {
   color: rgb(240,250,250);
 }
+
+ .MenuDiv {
+   border: 2px
+ }

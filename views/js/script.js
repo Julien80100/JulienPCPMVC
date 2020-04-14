@@ -31,35 +31,35 @@
         
   }
 
-  function displayhour()
-  {
-    var time = new Date();
-    var myTimeDiv = document.getElementById('time');
-    var secondes = time.getSeconds();
-    var minutes = time.getMinutes();
-    var heures = time.getHours();
+//   function displayhour()
+//   {
+//     var time = new Date();
+//     var myTimeDiv = document.getElementById('time');
+//     var secondes = time.getSeconds();
+//     var minutes = time.getMinutes();
+//     var heures = time.getHours();
     
-    if ( time.getHours() >= 0 && time.getHours() < 10 ) {
+//     if ( time.getHours() >= 0 && time.getHours() < 10 ) {
        
-      heures = "0"+time.getHours();
+//       heures = "0"+time.getHours();
       
-    }
+//     }
     
-    if ( time.getMinutes() >= 0 && time.getMinutes() < 10 ) {
+//     if ( time.getMinutes() >= 0 && time.getMinutes() < 10 ) {
        
-      minutes = "0"+time.getMinutes();
+//       minutes = "0"+time.getMinutes();
       
-    }
+//     }
     
-    if ( time.getSeconds() >= 0 && time.getSeconds() < 10 ) {
+//     if ( time.getSeconds() >= 0 && time.getSeconds() < 10 ) {
        
-      secondes = "0"+time.getSeconds();
+//       secondes = "0"+time.getSeconds();
       
-    }
+//     }
     
-    var newTime = heures+'h '+minutes+'m '+secondes;
+//     var newTime = heures+'h '+minutes+'m '+secondes;
    
-    myTimeDiv.innerHTML = newTime;
+//     myTimeDiv.innerHTML = newTime;
     
-  }
-  var timetodisplay = setInterval(displayhour, 1000);
+//   }
+//   var timetodisplay = setInterval(displayhour, 1000);

@@ -39,6 +39,7 @@
               <button style="margin-right:15px" class="btn btn-outline-light my-2 my-sm-0" type="submit">Vos tâches effectué</button>
             </form>
             </li>
+           
             <li class="nav-item active">
             <form method="post" class="form-inline my-2 my-lg-0" action="?c=tache&t=list">
               <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Tâches global</button>
@@ -71,7 +72,7 @@
               {% if competence.taches|length > 0 %}
 
                 {% for tache in competence.taches %}
-
+                  
                   {% if tache.user.id == user.id %}
                     {% set valide = true %}      
                   {% else %}

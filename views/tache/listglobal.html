@@ -67,6 +67,7 @@
       </tr>
       
       {% for tache in taches %}
+      {% if tache.isveille == 0 %}
       
       <tr>
         <td class="LigneListing"> <u>{{ tache.libelle }}</u></td>
@@ -98,7 +99,7 @@
         {% endif %}
       </tr>
       
-      
+      {% endif %}
       {% endfor %}
     </table>
   </body>

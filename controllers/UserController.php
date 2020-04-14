@@ -12,9 +12,11 @@ class UserController extends Controller
       $em = $request->getEm();      
       $user = $request->getUser();
     
-      $eleves = $em->getRepository(User::class)->findBy([
-      'tuteur' => $user->getId(),
-    ]);
+      if (null !== $user) {
+        $eleves = $em->getRepository(User::class)->findBy([
+        'tuteur' => $user->getId(),
+        ]);
+      }
         
     
     if (null !== $user) {

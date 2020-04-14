@@ -29,11 +29,20 @@ class Tache
     * @ORM\ManyToOne(targetEntity="User")
     */
     protected $user;
+    /**
+     * @ORM\column(name="isveille", type="boolean", options={"default":"0"})
+     */
+    protected $isveille;
   
     /**
      * @ORM\ManyToMany(targetEntity="Competence", inversedBy="taches")
      */
     protected $competences;
+
+    /**
+     * @ORM\column(name="validebytuteur", type="boolean", options={"default":"0"})
+     */
+    protected $validebytuteur;
   
     public function addCompetences($competences)
     {
@@ -50,6 +59,7 @@ class Tache
         }
         return $this;
     }
+
   
 
   
@@ -189,4 +199,55 @@ class Tache
     {
         return $this->competences;
     }
-}
+
+    
+      /**
+     * Set isveille.
+     *
+     * @param boolean $isveille
+     *
+     * @return Tache
+     */
+    public function setIsveille($isveille)
+    {
+        $this->isveille = $isveille;
+
+        return $this;
+    }
+
+    /**
+     * Get isveille.
+     *
+     * @return boolean
+     */
+    public function getIsveille()
+    {
+        return $this->isveille;
+    }
+
+    
+      /**
+     * Set validebytuteur.
+     *
+     * @param boolean $validebytuteur
+     *
+     * @return Tache
+     */
+    public function setValidebytuteur($validebytuteur)
+    {
+        $this->validebytuteur = $validebytuteur;
+
+        return $this;
+    }
+
+    /**
+     * Get validebytuteur.
+     *
+     * @return boolean
+     */
+    public function getValidebytuteur()
+    {
+        return $this->validebytuteur;
+    }
+
+}  
