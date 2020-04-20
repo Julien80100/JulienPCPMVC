@@ -252,14 +252,17 @@ class UserController extends Controller
       'question' => $post['question'],
       'answer' => base64_encode($post['reponse'])
     ]);
-      
+    
     if (NULL ==! $user) {
       $message = "Votre nom d'utilisateur est ".$user->getUsername();
     echo $this->twig->render('Authentification.html',[
              'message'  => $message
     ]);       
     } else {  
-      header('Location: ?c=user&t=index');
+      $message = "Ce compte n'existe pas";
+    echo $this->twig->render('Authentification.html',[
+             'message'  => $message
+    ]);
     }
   }
     

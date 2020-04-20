@@ -88,13 +88,14 @@
               {% if tache.validebytuteur == 0 %}
                 <td class="LigneListing">
                   <form method="post" action="?c=tache&t=validebytuteur&id={{tache.id}}">
-                    <button type="submit" class="btn btn-outline-success">Validé</button>
+                    <button type="submit" class="btn btn-outline-success">Valider</button>
                   </form>
                 </td>
               {% elseif tache.validebytuteur == 1 %}
                 <td class="LigneListing">
                   <form method="post" action="?c=tache&t=invalidebytuteur&id={{tache.id}}">
-                    <button type="submit" class="btn btn-outline-danger">Invalidé</button>
+                    <h6><span class="badge badge-success">cette tache est validé</span></h6>
+                    <button type="submit" class="btn btn-outline-danger">Invalider</button>
                   </form>
                 </td>
               {% endif %}
@@ -124,9 +125,10 @@
       <caption class="TitreTableauListing">Liste des compétences facultative :</caption>
 
       {% for competence in competences %}
-        {% if competence.epreuve is not null %}
+        {% if competence.activity is not null %}
           <tr>
             <td class="LigneListing"> {{ competence.title }}  </td>
+            <td class="LigneListing"> {{ competence.activity }}</td>
           </tr>
         {% endif %}
       {% endfor %}

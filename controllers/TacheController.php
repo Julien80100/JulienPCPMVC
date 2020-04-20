@@ -120,6 +120,7 @@ class TacheController extends Controller
     $em->persist($tache);
     $em->flush();
     
+    $tache->setLibelle($post['libelle']);
     $tache->setDescription($post['Description']);
     $date = new \DateTime($post['Date']);
     $tache->setDate($date);
