@@ -41,41 +41,68 @@ $request->setEm($entityManager);
 $request->setPost($postParams);
 $request->setGet($getParams);
 
+// if (isset($_SESSION['id'])) {
+  
+//   $user = $entityManager->getRepository(User::class)->find($_SESSION['id']);
+//   $request->setUser($user);
+  
+// }
+
+// $target = isset($_GET['t']) ? $_GET['t'] : "connected";
+// $class = "Controllers\\" . (isset($_GET['c']) ? ucfirst($_GET['c']) . 'Controller' : 'UserController');
+
+// if ( null !== $request->getUser() ) {
+  
+//   $target = isset($_GET['t']) ? $_GET['t'] : "index";
+  
+// } else {
+  
+//   if ($target !== "connected"){
+    
+//     if ( "registration" == $_GET['t'] || "registered" == $_GET['t'] || "lostpassword" == $_GET['t'] || "lostusername" == $_GET['t'] ){
+
+//         $target = isset($_GET['t']) ? $_GET['t'] : "index";
+      
+//     } else {
+      
+//        $target = isset($_GET['t']) ? $_GET['t'] : "connected";
+      
+//     }
+ 
+//   } else {
+      
+//       $target = isset($_GET['t']) ? $_GET['t'] : "connected";
+//   }
+  
+// }
+
+
+// $params = [
+//     "request" => $request,
+// ];
+//   if (class_exists($class, true)) {
+//     $user = $request->getUser();
+
+      
+//       $class = new $class();
+//       if (in_array($target, get_class_methods($class))) {
+//           call_user_func_array([$class, $target], $params);
+//       } else {
+//           call_user_func([$class, "index"]);
+//       }
+//   }
+
 if (isset($_SESSION['id'])) {
   
   $user = $entityManager->getRepository(User::class)->find($_SESSION['id']);
-  $request->setUser($user);
-  
-}
-
-$target = isset($_GET['t']) ? $_GET['t'] : "connected";
-$class = "Controllers\\" . (isset($_GET['c']) ? ucfirst($_GET['c']) . 'Controller' : 'UserController');
-
-if ( null !== $request->getUser() ) {
-  
-  $target = isset($_GET['t']) ? $_GET['t'] : "index";
-  
-} else {
-  
-  if ($target !== "connected"){
-    
-    if ( "registration" == $_GET['t'] || "registered" == $_GET['t'] || "lostpassword" == $_GET['t'] || "lostusername" == $_GET['t'] ){
-
-        $target = isset($_GET['t']) ? $_GET['t'] : "index";
-      
-    } else {
-      
-       $target = isset($_GET['t']) ? $_GET['t'] : "connected";
-      
-    }
- 
-  } else {
-      
-      $target = isset($_GET['t']) ? $_GET['t'] : "connected";
+  if (NULL !== $user) {
+    $request->setUser($user);
   }
   
 }
 
+$target = isset($_GET['t']) ? $_GET['t'] : "index";
+$class = "Controllers\\" . (isset($_GET['c']) ? ucfirst($_GET['c']) . 'Controller' : 'UserController');
 
 $params = [
     "request" => $request,
@@ -88,6 +115,7 @@ $params = [
       if (in_array($target, get_class_methods($class))) {
           call_user_func_array([$class, $target], $params);
       } else {
-          call_user_func([$class, "index"]);
+          call_user_func([$class, "index"], $request);
       }
   }
+

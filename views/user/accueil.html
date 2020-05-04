@@ -50,10 +50,20 @@
             </form>
             </li>
           </ul>
-          <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{user.username}} </h6></span>
-          <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
-            <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
-          </form>
+          {% if user is not null %}
+            <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{user.username}} </h6></span>
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
+              <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
+            </form>
+          {% elseif user is null %}
+            <span class="badge badge-danger mr-sm-2"><h6>Vous n'êtes pas connecté </h6></span>
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=connected">
+              <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">connexion</button>
+            </form>
+            <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=register">
+              <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">inscription</button>
+            </form>
+          {% endif %}  
         </div>
       </nav>
     </header>
@@ -62,36 +72,48 @@
         <ul style="list-style-type: none;">
           <li><h2 style="color:white;text-shadow: black 3px 3px;"><i>Page d'accueil</i></h2></li>
           <br />
-          {% if user.role == 4 %}
-            <h4>Vous avez {{ elevescount }} apprentis </h4>
-            <hr color="white">
-            <li><h4><a href="?c=user&t=TuteurPanel" style="color:white"> Liste des apprentis </a></h4></li>
-            <br />
-            {% if elevescount > 1 %}
-              <li><h4><a href="?c=tache&t=listtuteur" style="color:white"> Taches des apprentis. </a></h4></li>
-            {% elseif elevescount == 1 %}
-              <li><h4><a href="?c=tache&t=listtuteur" style="color:white"> Taches de l'apprentis. </a></h4></li>
-              <li><h4><a href="?c=tache&t=listveilletuteur" style="color:white"> Veille de l'apprentis. </a></h4></li>
-            {% endif %}
-          {% else %}
-            <li><h4><a href="?c=tache&t=listuser" target="_self" style="color:white">Vos tâches effectué</a></h4></li>
-            {% if user.role == 3 %}
-              <li><h4><a href="?c=tache&t=list" target="_self" style="color:white">Liste des tâches global</a></h4></li>
-            {% endif %}
-            <li><h4><a href="?c=tache&t=new" target="_self" style="color:white">Nouvelle tache</a></h4></li>
-            <br />
-            {% if user.role == 2 or user.role == 3 %}
-            <li><h4><a href="?c=tache&t=veilletechnologique" target="_self" style="color:white">Créer une veille technologique</a></h4></li> 
-            <li><h4><a href="?c=tache&t=listveilletechnologique" target="_self" style="color:white">Liste des veilles technologique</a></h4></li>   
-            {% endif %}
-            <br />
-            <li><h4><a href="?c=competence&t=list" target="_self" style="color:white">Liste des compétences</a></h4></li>
-            {% if user.role == 3 %}
+
+          {% if user is not null %}
+            {% if user.role == 4 %}
+              <h4>Vous avez {{ elevescount }} apprentis </h4>
               <hr color="white">
-              <li><h4><a href="?c=user&t=admin" style="color:white"> Panel administrateur </a></h4></li>
-              <li><h4><a href="?c=competence&t=create" style="color:white"> Creation Competence </a></h4></li>
+              <li><h4><a href="?c=user&t=TuteurPanel" style="color:white"> Liste des apprentis </a></h4></li>
+              <br />
+              {% if elevescount > 1 %}
+                <li><h4><a href="?c=tache&t=listtuteur" style="color:white"> Taches des apprentis. </a></h4></li>
+              {% elseif elevescount == 1 %}
+                <li><h4><a href="?c=tache&t=listtuteur" style="color:white"> Taches de l'apprentis. </a></h4></li>
+                <li><h4><a href="?c=tache&t=listveilletuteur" style="color:white"> Veille de l'apprentis. </a></h4></li>
+              {% endif %}
+            {% else %}
+              <li><h4><a href="?c=tache&t=listuser" target="_self" style="color:white">Vos tâches effectué</a></h4></li>
+
+                <li><h4><a href="?c=tache&t=list" target="_self" style="color:white">Liste des tâches global</a></h4></li>
+
+              <li><h4><a href="?c=tache&t=new" target="_self" style="color:white">Nouvelle tache</a></h4></li>
+              <br />
+              {% if user.role == 2 or user.role == 3 %}
+              <li><h4><a href="?c=tache&t=veilletechnologique" target="_self" style="color:white">Créer une veille technologique</a></h4></li> 
+              <li><h4><a href="?c=tache&t=listveilletechnologique" target="_self" style="color:white">Liste des veilles technologique</a></h4></li>   
+              {% endif %}
+              <br />
+              <li><h4><a href="?c=competence&t=list" target="_self" style="color:white">Liste des compétences</a></h4></li>
+              {% if user.role != 4 %}
+              <br />
+              <li><h4><a href="?c=user&t=publiclist" style="color:white"> Liste des apprentis </a></h4></li>
+              {% endif %}
+              {% if user.role == 3 %}
+                <hr color="white">
+                <li><h4><a href="?c=user&t=admin" style="color:white"> Panel administrateur </a></h4></li>
+                <li><h4><a href="?c=competence&t=create" style="color:white"> Creation Competence </a></h4></li>
+              {% endif %}
             {% endif %}
+          {% elseif user is null %}
+            <li><h4><a href="?c=tache&t=list" target="_self" style="color:white">Liste des tâches global</a></h4></li>
+            <li><h4><a href="?c=user&t=publiclist" style="color:white"> Liste des apprentis </a></h4></li>
           {% endif %}
+            <br />
+            <li> <h3><a class="btn btn-outline-danger" href="docs/_build/html/index.html" style="color:white"> Comment utiliser ce site ? </a></h3> </li>
         </ul>
     </div>
     

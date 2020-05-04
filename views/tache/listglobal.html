@@ -34,23 +34,35 @@
               <button  style="margin-right:15px;" class="btn btn-outline-light my-2 my-sm-0" type="submit">Accueil</button>
             </form>
             </li>
+            {% if user is not null %}
             <li class="nav-item active">
             <form method="post" class="form-inline my-2 my-lg-0" action="?c=competence&t=list">
               <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Tableau des compétences</button>
             </form>
             </li>
           </ul>
+
           <span class="badge badge-danger mr-sm-2"><h6>connecté en tant que : {{user.username}} </h6></span>
           <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=deconnected">
             <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">déconnexion</button>
           </form>
+          {% elseif user is null %}
+          </ul>
+          
+          <span class="badge badge-danger mr-sm-2"><h6>Vous n'êtes pas connecté </h6></span>
+          <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=connected">
+            <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">connexion</button>
+          </form>
+          {% endif %}
         </div>
       </nav>
     </header>
-      
+    
+    {% if user is not null %}
     <form method="post" action="?c=tache&t=new">  
         <button type="submit" class="newtachebutton btn btn-danger"> Nouvelle taches</button>
     </form>
+    {% endif %}
     
     <br />
     
@@ -82,19 +94,26 @@
         <td class="LigneListing"> {{ tache.date|date("d/m/Y") }} </td>
         <td class="LigneListing"> {{ tache.user.username }}</td>
         
-        {% if tache.user.id == user.id or user.role == 3 %}
+        {% if tache.validebytuteur == 0 %}
+          {% if tache.user.id == user.id or user.role == 3 %}
+          
+            <td class="LigneListing">
+              <form method="post" action="?c=tache&t=edit&id={{tache.id}}">
+                <button type="submit" class="btn btn-outline-danger">Editer</button>
+              </form>
+              
+  <!--             <form method="post" action="?c=tache&t=deleted&id={{tache.id}}"> -->
+                <button type="submit" class="btn btn-danger" onclick="confirmed('http://195.154.118.169/julien/ProjetPCP/index.php?c=tache&t=deleted&id='+{{tache.id}})">Supprimer</button>
+  <!--             </form> -->
+            </td>
+          {% else %}
+            <td class="LigneListing">
+              <p class="warning"> Cette tache ne vous appartient pas.</p>
+            </td>
+          {% endif %}
+        {% elseif tache.validebytuteur == 1 %}
           <td class="LigneListing">
-            <form method="post" action="?c=tache&t=edit&id={{tache.id}}">
-              <button type="submit" class="btn btn-outline-danger">Editer</button>
-            </form>
-            
-<!--             <form method="post" action="?c=tache&t=deleted&id={{tache.id}}"> -->
-              <button type="submit" class="btn btn-danger" onclick="confirmed('http://195.154.118.169/julien/ProjetPCP/index.php?c=tache&t=deleted&id='+{{tache.id}})">Supprimer</button>
-<!--             </form> -->
-          </td>
-        {% else %}
-          <td class="LigneListing">
-            <p class="warning"> Cette tache ne vous appartient pas.</p>
+            <h5><span class="badge badge-success">Tache validé</span></h5>
           </td>
         {% endif %}
       </tr>

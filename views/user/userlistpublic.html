@@ -45,49 +45,42 @@
             <form method="post" class="form-inline my-2 my-lg-0" action="?c=user&t=connected">
               <button  class="btn btn-outline-danger my-2 my-sm-0" type="submit">connexion</button>
             </form>
-          {% endif %} 
+          {% endif %}
         </div>
       </nav>
     </header>
     
     <br />
     
-    <table border="2px" class="table table-striped table-hover Listing well" style="width:90%">
+    <table border="2px" class="table table-striped table-hover Listing well" style="width:40%">
       <tr>
         <th class="EnteteListing" weight="400px"> Utilisateur </td>
-        <th class="EnteteListing"> Tuteur </td>
+        <th class="EnteteListing"> Tâches </td>
       </tr>
       
       {% for users in userlist %}
-        {% if users.role != 3 %}
+        {% if users.role == 2 %}
           <tr>
             <td class="LigneListing">{{ users.username }}</td>
             <td class="LigneListing">
-              {% if users.role == 4 %}
-                {% if users.id == user.id %}
-              <b><u>Vous ne pouvez pas être votre propre tuteur</u></b>
-                {% else %}
-                  <b><u>Vous ne pouvez pas être tuteur de cet personne</u></b>
-                {% endif %}
-              {% else %}
-                {% if users.tuteur is not null and users.tuteur != 0 %}
-                  {% for tuteur in userlist %}
-                      {% if users.tuteur == tuteur.id %} 
-                        {% if users.tuteur == user.id %}
-                          <form method="post" action="?c=user&t=RemoveTuteur&id={{users.id}}">
-                            <button class="btn btn-outline-success"> Ne plus être tuteur </button>
-                          </form>
-                        {% else %}
-                          <b>{{ tuteur.username }}</b>
-                        {% endif %}
-                      {% endif %}
-                  {% endfor %}
-                {% else %}
-                    <form method="post" action="?c=user&t=SetTuteur&id={{users.id}}">
-                      <button class="btn btn-outline-danger"> Devenir tuteur </button>
-                    </form>
-                {% endif %}
-              {% endif %}
+              <div class="row">
+                <div class="col-sm-1"></div>
+
+                <div class="col-sm-4">
+                  <form method="post" action="?c=tache&t=checktachebyusersimple&id={{users.id}}">
+                      <button class="btn btn-outline-light"> Liste taches simplifié </button>
+                  </form>
+              </div>
+              <div class="col-sm-1"></div>
+
+              <div class="col-sm-4">
+                <form method="post" action="?c=tache&t=checktachebyuserdetail&id={{users.id}}">
+                  <button class="btn btn-outline-light"> Liste taches détaillé </button>
+                </form>
+              </div>
+
+              <div class="col-sm-1"></div>
+            </div>
             </td>
           </tr>
         {% endif %}

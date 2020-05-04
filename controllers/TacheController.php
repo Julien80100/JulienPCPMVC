@@ -7,17 +7,16 @@ class TacheController extends Controller
 {
     public function index()
     {
-        header('Location: ?c=user&t=connected');
+        header('Location: ?c=user&t=index');
     }
   
     public function list(Request $request)
 {
-      $user = $request->getUser();
-      if (NULL ==! $user && $user->getIsConnected() == 1 && $user->getrole() == 3){ 
+      $user = $request->getUser(); 
 
 
         $tacheRepository = $request->getEm()->getRepository('Entity\Tache');
-        $taches = $tacheRepository->findAll();       
+        $taches = $tacheRepository->findBy(['isveille' => 0]);       
         
   
         echo $this->twig->render('listglobal.html',
@@ -27,9 +26,87 @@ class TacheController extends Controller
           "user"  =>  $user,
           ]
         );
-      } else {
-        header('Location: ?c=tache&t=listuser');
-      }
+    }
+
+public function checktachebyuserdetail(Request $request)
+{
+  $em = $request->getEm();
+  $get = $request->getGet();
+
+  $user = $request->getUser();
+  $userselected = $em->getRepository('Entity\User')->findOneBy(['id' => $get['id']]);
+
+  $tacheRepository = $em->getRepository('Entity\Tache');
+  $competenceRepository = $em->getRepository('Entity\Competence');       
+
+  $taches = $tacheRepository->findBy(["user" => $userselected, "isveille" => 0]);
+  $competences = $competenceRepository->findAll();
+
+  echo $this->twig->render('listbyuserdetail.html',
+    [
+    "taches" => $taches,
+    "quantity" => count($taches),
+    "user"  =>  $user,
+    'userselected' => $userselected,
+    "competences" => $competences
+    ]
+  );
+}
+
+public function checktachebyusersimple(Request $request)
+{
+  $em = $request->getEm();
+  $get = $request->getGet();
+
+  $user = $request->getUser();
+  $userselected = $em->getRepository('Entity\User')->findOneBy(['id' => $get['id']]);
+
+  $tacheRepository = $em->getRepository('Entity\Tache');
+  $competenceRepository = $em->getRepository('Entity\Competence');       
+
+  $taches = $tacheRepository->findBy(["user" => $userselected, "isveille" => 0]);
+  $competences = $competenceRepository->findAll();
+
+  echo $this->twig->render('listbyusersimple.html',
+    [
+    "taches" => $taches,
+    "quantity" => count($taches),
+    "user"  =>  $user,
+    'userselected' => $userselected,
+    "competences" => $competences
+    ]
+  );
+}
+
+
+    public function listtuteur($request)
+    {
+  
+        $user = $request->getUser();
+        $userid = $user->getId();
+        if (NULL ==! $user && $user->getIsConnected() == 1 && $user->getRole() == 4){ 
+          $tacheRepository = $request->getEm()->getRepository('Entity\Tache');
+          $competenceRepository = $request->getEm()->getRepository('Entity\Competence');       
+          
+          $tuteuruser = $request->getEm()->getRepository('Entity\User')->findOneBy([
+        'tuteur' => $userid
+        ]);
+  
+        $taches = $tacheRepository->findBy(["user" => $tuteuruser, "isveille" => 0]);
+        $competences = $competenceRepository->findAll();
+            // var_dump($taches); die;
+          echo $this->twig->render('listtachetuteur.html',
+            [
+            "taches" => $taches,
+            "quantity" => count($taches),
+            "user"  =>  $user,
+            "eleve" => $tuteuruser,
+            "competences" => $competences
+            ]
+          );
+        } else {
+          header('Location: ?c=user&t=index');
+        }
     }
   
     public function new(Request $request)
@@ -101,7 +178,7 @@ class TacheController extends Controller
         ]
       );
     } else {
-      header('Location: ?c=user&t=connected');
+      header('Location: ?c=user&t=index');
     }
     
   }
@@ -188,39 +265,10 @@ class TacheController extends Controller
           ]
         );
       } else {
-        header('Location: ?c=user&t=connected');
+        header('Location: ?c=user&t=index');
       }
     }
-  
-  public function listtuteur($request)
-  {
 
-      $user = $request->getUser();
-      $userid = $user->getId();
-      if (NULL ==! $user && $user->getIsConnected() == 1 && $user->getRole() == 4){ 
-        $tacheRepository = $request->getEm()->getRepository('Entity\Tache');
-        $competenceRepository = $request->getEm()->getRepository('Entity\Competence');       
-        
-        $tuteuruser = $request->getEm()->getRepository('Entity\User')->findOneBy([
-      'tuteur' => $userid
-      ]);
-
-      $taches = $tacheRepository->findBy(["user" => $tuteuruser, "isveille" => 0]);
-      $competences = $competenceRepository->findAll();
-          // var_dump($taches); die;
-        echo $this->twig->render('listtachetuteur.html',
-          [
-          "taches" => $taches,
-          "quantity" => count($taches),
-          "user"  =>  $user,
-          "eleve" => $tuteuruser,
-          "competences" => $competences
-          ]
-        );
-      } else {
-        header('Location: ?c=user&t=connected');
-      }
-  }
 
   public function validebytuteur($request)
   {
@@ -239,7 +287,7 @@ class TacheController extends Controller
 
     header('Location: ?c=tache&t=listtuteur');
     } else {
-      header('Location: ?c=user&t=connected');
+      header('Location: ?c=user&t=index');
     }
   }
 
@@ -260,7 +308,7 @@ class TacheController extends Controller
 
     header('Location: ?c=tache&t=listtuteur');
     } else {
-      header('Location: ?c=user&t=connected');
+      header('Location: ?c=user&t=index');
     }
   }
 
@@ -286,7 +334,7 @@ class TacheController extends Controller
         ]
       );
     } else {
-      header('Location: ?c=user&t=connected');
+      header('Location: ?c=user&t=index');
     }  
   }
 
@@ -366,7 +414,7 @@ class TacheController extends Controller
         ]);
 
     } else {
-      header('Location: ?c=user&t=connected');
+      header('Location: ?c=user&t=index');
     }
   }
 
@@ -406,7 +454,7 @@ class TacheController extends Controller
 
     header('Location: ?c=tache&t=listveilletuteur');
     } else {
-      header('Location: ?c=user&t=connected');
+      header('Location: ?c=user&t=index');
     }
   }
 
@@ -427,7 +475,7 @@ class TacheController extends Controller
 
     header('Location: ?c=tache&t=listveilletuteur');
     } else {
-      header('Location: ?c=user&t=connected');
+      header('Location: ?c=user&t=index');
     }
   }
 }

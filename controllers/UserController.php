@@ -16,18 +16,17 @@ class UserController extends Controller
         $eleves = $em->getRepository(User::class)->findBy([
         'tuteur' => $user->getId(),
         ]);
-      }
-        
-    
-    if (null !== $user) {
+
       echo $this->twig->render('accueil.html', [
           'elevescount' => count($eleves), 
-          'user'  =>  $user,
-        
-      ]);
-    } 
-    else {
-       header('Location: ?c=user&t=connected'); 
+          'user'  =>  $user,        
+        ]);
+      }
+
+    if (null == $user) {
+      echo $this->twig->render('accueil.html', [ 
+        'user'  =>  $user,
+    ]);
     }
     
   }
@@ -170,7 +169,7 @@ class UserController extends Controller
      /**
       * Retour à l'index
       */
-     header('Location: ?c=user&t=connected');
+     header('Location: ?c=user&t=index');
     
      
   }
@@ -223,7 +222,7 @@ class UserController extends Controller
     ]);
       
     if (NULL ==! $user) {
-      $user->SetPassword(base64_encode($newpassword));
+      $user->SetPassword($newpassword);
       $message = "Le mot de passe a bien était changé pour l'utilisateur ".$user->getUsername();
       $em->persist($user);
       $em->flush();
@@ -396,5 +395,16 @@ class UserController extends Controller
         $em->flush();
         header('Location: ?c=user&t=TuteurPanel');
     }
+  }
+
+  public function publiclist($request) {
+    $em = $request->getEm();
+    $userList = $em->getRepository(User::class)->findAll();
+    $user = $request->getUser();
+
+    echo $this->twig->render('userlistpublic.html', [
+      'user' => $user,
+      'userlist' => $userList
+    ] );   
   }
 }
